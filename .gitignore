@@ -1,0 +1,17 @@
+node_modules/
+
+.env
+
+.next/
+
+dist/
+
+coverage/
+
+.vscode/
+
+.idea/
+
+.DS_Store
+
+*.log
