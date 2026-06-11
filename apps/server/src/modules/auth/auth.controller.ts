@@ -2,7 +2,7 @@ import * as AuthService from "./auth.service";
 import {generateToken} from "../../utils/jwt";
 import {AuthContext, RequestContext} from "../../types";
 
-export const signup = async ({body}: RequestContext) => {
+export const register = async ({body}: RequestContext) => {
     const {email, password} = body;
 
     const result = await AuthService.createUser({email, password});
@@ -15,7 +15,6 @@ export const signup = async ({body}: RequestContext) => {
         success: true,
         statusCode: 201,
         data: result.data,
-        message: "User created successfully",
         token,
     };
 };
@@ -32,7 +31,6 @@ export const login = async ({body}: RequestContext) => {
     return {
         success: true,
         data: result.data,
-        message: "Login successful",
         token,
     };
 };
@@ -45,18 +43,4 @@ export const logout = async () => {
         },
         clearCookie: true,
     };
-};
-
-export const me = async ({user}: AuthContext) => {
-    if (!user?.userId) {
-        return {
-            success: false,
-            statusCode: 401,
-            message: "Unauthorized",
-        };
-    }
-
-    const result = await AuthService.getUserById({id: user.userId});
-
-    return result;
 };
