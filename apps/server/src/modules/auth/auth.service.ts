@@ -3,8 +3,6 @@ import {comparePassword, hashPassword} from "../../utils/password";
 import {
     CreateUserInput,
     CreateUserResult,
-    GetUserByIdInput,
-    GetUserByIdResult,
     LoginUserInput,
     LoginUserResult
 } from "./auth.types";

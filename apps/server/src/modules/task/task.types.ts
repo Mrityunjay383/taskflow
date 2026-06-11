@@ -1,5 +1,3 @@
-import {ServiceResult} from "../../types";
-
 export type TaskStatus = "TODO" | "IN_PROGRESS" | "COMPLETED";
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 

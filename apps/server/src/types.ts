@@ -12,15 +12,3 @@ export type RequestContext<TBody = any, TQuery = any, TParams = any> = {
     user?: any;
     headers: any;
 };
-
-export type ServiceResult<T = any> =
-    | {
-    success: true;
-    data: T;
-    message?: string;
-}
-    | {
-    success: false;
-    message: string;
-    data?: never;
-};
