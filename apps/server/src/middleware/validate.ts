@@ -1,10 +1,10 @@
 import { ZodType } from "zod";
 import { Request, Response, NextFunction } from "express";
 
-type ValidationTarget = "body" | "query" | "params";
+type Target = "body" | "query" | "params";
 
 export const validate =
-    (schema: ZodType, target: ValidationTarget = "body") =>
+    (schema: ZodType, target: Target = "body") =>
         (req: Request, res: Response, next: NextFunction) => {
             const result = schema.safeParse(req[target]);
 
@@ -19,6 +19,7 @@ export const validate =
                 });
             }
 
+            // overwrite clean data
             (req as any)[target] = result.data;
 
             next();

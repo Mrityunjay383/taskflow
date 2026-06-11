@@ -1,12 +1,12 @@
 import { Router } from "express";
 import * as authController from "./auth.controller";
-import { createControllerModule } from "../../utils/createControllerModule";
+import { controllerWrapper } from "../../utils/controllerWrapper";
 
 import authMiddleware from "../../middleware/auth";
 import {validate} from "../../middleware/validate";
 import {loginSchema, registerSchema} from "./auth.validation";
 
-const auth = createControllerModule(authController);
+const auth = controllerWrapper(authController);
 
 const router = Router();
 

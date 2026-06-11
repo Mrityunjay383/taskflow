@@ -1,6 +1,17 @@
-import { createContext } from "./createContext";
+import { Request } from "express";
+import {RequestContext} from "../types";
 
-export const createControllerModule = (controllers: any) => {
+const createContext = (req: Request): RequestContext => {
+    return {
+        body: req.body,
+        query: req.query,
+        params: req.params,
+        user: (req as any).user,
+        headers: req.headers,
+    };
+};
+
+export const controllerWrapper = (controllers: any) => {
     const wrapped: any = {};
 
     Object.entries(controllers).forEach(([key, fn]: any) => {
@@ -19,7 +30,9 @@ export const createControllerModule = (controllers: any) => {
                     });
                 }
 
-                if (result?.clearCookie) {
+                const auth = result?.auth;
+
+                if (auth?.clearToken) {
                     res.clearCookie("token", {
                         httpOnly: true,
                         sameSite: "lax",
@@ -27,24 +40,22 @@ export const createControllerModule = (controllers: any) => {
                     });
                 }
 
-                if (result?.token) {
-                    res.cookie("token", result.token, {
+                if (auth?.token) {
+                    res.cookie("token", auth.token, {
                         httpOnly: true,
                         secure: process.env.NODE_ENV === "production",
                         sameSite: "lax",
-                        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+                        maxAge: 7 * 24 * 60 * 60 * 1000,
                     });
                 }
 
                 return res.status(result.statusCode || 200).json({
                     success: true,
                     data: result.data ?? result,
+                    message: result.message,
                 });
             } catch (err) {
-                return res.status(500).json({
-                    success: false,
-                    message: "Internal Server Error",
-                });
+                next(err);
             }
         };
     });

@@ -2,11 +2,11 @@ import {Router} from "express";
 import authMiddleware from "../../middleware/auth";
 
 import * as taskController from "./task.controller";
-import {createControllerModule} from "../../utils/createControllerModule";
+import {controllerWrapper} from "../../utils/controllerWrapper";
 import {validate} from "../../middleware/validate";
 import {createTaskSchema, listTasksSchema, taskIdSchema, updateTaskSchema} from "./task.validation";
 
-const task = createControllerModule(taskController);
+const task = controllerWrapper(taskController);
 
 const router = Router();
 

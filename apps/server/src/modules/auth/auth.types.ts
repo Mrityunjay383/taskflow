@@ -22,6 +22,6 @@ export type GetUserByIdInput = {
 };
 
 
-export type CreateUserResult = Promise<ServiceResult<AuthUser>>;
-export type LoginUserResult = Promise<ServiceResult<AuthUser>>;
-export type GetUserByIdResult = Promise<ServiceResult<AuthUser>>;
+export type CreateUserResult = Promise<AuthUser>;
+export type LoginUserResult = Promise<AuthUser>;
+export type GetUserByIdResult = Promise<AuthUser>;

@@ -1,6 +1,5 @@
 import {prisma} from "../../config/prisma";
 import {comparePassword, hashPassword} from "../../utils/password";
-import {ServiceResult} from "../../types";
 import {
     CreateUserInput,
     CreateUserResult,
@@ -9,6 +8,7 @@ import {
     LoginUserInput,
     LoginUserResult
 } from "./auth.types";
+import {AppError} from "../../utils/AppError";
 
 export const createUser = async ({email, password}: CreateUserInput): CreateUserResult => {
     const existing = await prisma.user.findUnique({
@@ -16,10 +16,7 @@ export const createUser = async ({email, password}: CreateUserInput): CreateUser
     });
 
     if (existing) {
-        return {
-            success: false,
-            message: "User already exists",
-        };
+        throw new AppError("User already exists", 400);
     }
 
     const hashed = await hashPassword(password);
@@ -37,8 +34,9 @@ export const createUser = async ({email, password}: CreateUserInput): CreateUser
     });
 
     return {
-        success: true,
-        data: user,
+        id: user.id,
+        email: user.email,
+        role: user.role,
     };
 };
 
@@ -48,50 +46,18 @@ export const loginUser = async ({email, password}: LoginUserInput): LoginUserRes
     });
 
     if (!user) {
-        return {
-            success: false,
-            message: "Invalid credentials",
-        };
+        throw new AppError("Invalid credentials", 400)
     }
 
     const isValid = await comparePassword(password, user.password);
 
     if (!isValid) {
-        return {
-            success: false,
-            message: "Invalid credentials",
-        };
+        throw new AppError("Invalid credentials", 400)
     }
 
     return {
-        success: true,
-        data: {
-            id: user.id,
-            email: user.email,
-            role: user.role,
-        },
-    };
-};
-
-export const getUserById = async ({id}: GetUserByIdInput): GetUserByIdResult => {
-    const user = await prisma.user.findUnique({
-        where: {id},
-        select: {
-            id: true,
-            email: true,
-            role: true,
-        },
-    });
-
-    if (!user) {
-        return {
-            success: false,
-            message: "User not found",
-        };
-    }
-
-    return {
-        success: true,
-        data: user,
+        id: user.id,
+        email: user.email,
+        role: user.role,
     };
 };

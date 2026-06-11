@@ -7,14 +7,12 @@ export const register = async ({body}: RequestContext) => {
 
     const result = await AuthService.createUser({email, password});
 
-    if (!result.success) return result;
-
-    const token = generateToken(result.data.id);
+    const token = generateToken(result.id);
 
     return {
         success: true,
         statusCode: 201,
-        data: result.data,
+        data: result,
         token,
     };
 };
@@ -24,23 +22,28 @@ export const login = async ({body}: RequestContext) => {
 
     const result = await AuthService.loginUser({email, password});
 
-    if (!result.success) return result;
-
-    const token = generateToken(result.data.id);
+    const token = generateToken(result.id);
 
     return {
         success: true,
-        data: result.data,
-        token,
+        data: {
+            id: result.id,
+            email: result.email,
+            role: result.role,
+        },
+        auth: {
+            token,
+        },
+        message: "Login successful",
     };
 };
 
 export const logout = async () => {
     return {
         success: true,
-        data: {
-            message: "Logged out successfully"
+        auth: {
+            clearToken: true,
         },
-        clearCookie: true,
+        message: "Logged out successfully",
     };
 };

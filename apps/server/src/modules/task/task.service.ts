@@ -1,11 +1,12 @@
 import {prisma} from "../../config/prisma";
+import {AppError} from "../../utils/AppError";
 import {
     CreateTaskResult,
     CreateTaskSInput,
     DeleteTaskInput,
     DeleteTaskResult,
     GetTaskInput,
-    GetTaskResult,
+    GetTaskResult, GetTasksResult,
     Task,
     TaskQueryInput,
     UpdateTaskInput,
@@ -25,13 +26,10 @@ export const createTask = async ({userId, task}: CreateTaskSInput): CreateTaskRe
         },
     });
 
-    return {
-        success: true,
-        data: createdTask as Task,
-    };
+    return createdTask as Task;
 };
 
-export const getTasksByUser = async (input: TaskQueryInput) => {
+export const getTasksByUser = async (input: TaskQueryInput): GetTasksResult => {
     const {
         userId,
         page = 1,
@@ -83,16 +81,14 @@ export const getTasksByUser = async (input: TaskQueryInput) => {
     });
 
     return {
-        success: true,
-        data: {
-            tasks,
-            pagination: {
-                page,
-                limit,
-                total,
-                totalPages: Math.ceil(total / limit),
-            },
+        tasks,
+        pagination: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit),
         },
+
     };
 };
 
@@ -105,16 +101,10 @@ export const getTaskById = async ({id, userId}: GetTaskInput): GetTaskResult => 
     });
 
     if (!task) {
-        return {
-            success: false,
-            message: "Task not found",
-        };
+        throw new AppError("Task not found", 404);
     }
 
-    return {
-        success: true,
-        data: task as Task,
-    };
+    return task as Task;
 };
 
 export const updateTask = async (
@@ -129,10 +119,7 @@ export const updateTask = async (
     });
 
     if (!updatedTask) {
-        return {
-            success: false,
-            message: "Task not found",
-        };
+        throw new AppError("Task not found", 404);
     }
 
     const updated = await prisma.task.update({
@@ -140,10 +127,7 @@ export const updateTask = async (
         data: task,
     });
 
-    return {
-        success: true,
-        data: updated as Task,
-    };
+    return  updated as Task
 };
 
 export const deleteTask = async ({id, userId}: DeleteTaskInput): DeleteTaskResult => {
@@ -152,18 +136,12 @@ export const deleteTask = async ({id, userId}: DeleteTaskInput): DeleteTaskResul
     });
 
     if (!task) {
-        return {
-            success: false,
-            message: "Task not found",
-        };
+        throw new AppError("Task not found", 404);
     }
 
     await prisma.task.delete({
         where: {id},
     });
 
-    return {
-        success: true,
-        data: {id},
-    };
+    return id
 };

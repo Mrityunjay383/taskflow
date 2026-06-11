@@ -1,4 +1,4 @@
-import { ServiceResult } from "../../types";
+import {ServiceResult} from "../../types";
 
 export type TaskStatus = "TODO" | "IN_PROGRESS" | "COMPLETED";
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
@@ -61,8 +61,15 @@ export type DeleteTaskInput = {
     userId: string;
 };
 
-export type CreateTaskResult = Promise<ServiceResult<Task>>;
-export type GetTasksResult = Promise<ServiceResult<Task[]>>;
-export type GetTaskResult =Promise <ServiceResult<Task>>
-export type UpdateTaskResult = Promise<ServiceResult<Task>>;
-export type DeleteTaskResult = Promise<ServiceResult<{ id: string }>>;
+export type CreateTaskResult = Promise<Task>;
+export type GetTasksResult = Promise<{
+    tasks: Task[], pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+    }
+}>;
+export type GetTaskResult = Promise<Task>
+export type UpdateTaskResult = Promise<Task>;
+export type DeleteTaskResult = Promise<string>;

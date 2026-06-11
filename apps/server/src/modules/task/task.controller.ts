@@ -5,35 +5,55 @@ export const create = async ({ body, user }: AuthContext) => {
     if (!user?.userId) {
         return {
             success: false,
-            message: "Unauthorized",
+            message: "Unauthorized user",
         };
     }
 
-    return await TaskService.createTask({userId: user.userId, task: body});
+    const newTask = await TaskService.createTask({userId: user.userId, task: body});
+
+    return {
+        success: true,
+        statusCode: 201,
+        data: newTask,
+    }
 };
 
 export const list = async ({user, query}: AuthContext) => {
 
-    return await TaskService.getTasksByUser({
+    const lastList = await TaskService.getTasksByUser({
         userId: user.userId,
-        page: Number(query.page),
-        limit: Number(query.limit),
-        status: query.status,
-        priority: query.priority,
-        search: query.search,
-        sortBy: query.sortBy,
-        sortOrder: query.sortOrder,
+        ...query,
     });
+
+    return {
+        success: true,
+        data: lastList,
+    }
 };
 
 export const getOne = async ({ params, user }: AuthContext) => {
-    return await TaskService.getTaskById({id: params.id, userId:user.userId});
+    const task = await TaskService.getTaskById({id: params.id, userId:user.userId})
+
+    return {
+        success: true,
+        data: task
+    } ;
 };
 
 export const update = async ({ params, body, user }: AuthContext) => {
-    return await TaskService.updateTask({id: params.id, userId:user.userId, task:body});
+    const updatedTask = await TaskService.getTaskById({id: params.id, userId:user.userId})
+
+    return {
+        success: true,
+        data: updatedTask
+    } ;
 };
 
 export const remove = async ({ params, user }: AuthContext) => {
-    return await TaskService.deleteTask({id: params.id, userId: user.userId});
+    const deletedTaskId = await TaskService.getTaskById({id: params.id, userId:user.userId})
+
+    return {
+        success: true,
+        data: deletedTaskId
+    } ;
 };
