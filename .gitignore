@@ -1,17 +1,28 @@
+# Dependencies
 node_modules/
 
-.env
+# Environment variables
+apps/server/src/.env
+.env.*
+!.env.example
 
+# Next.js
 .next/
 
+# Build output
 dist/
+build/
 
+# Coverage
 coverage/
 
+# IDE
 .vscode/
-
 .idea/
 
+# OS
 .DS_Store
+Thumbs.db
 
+# Logs
 *.log
