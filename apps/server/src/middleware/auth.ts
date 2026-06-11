@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../utils/jwt";
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const auth = (req: Request, res: Response, next: NextFunction) => {
     try {
         const cookieToken = req.cookies?.token;
 
@@ -33,4 +33,4 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-export default authMiddleware
+export default auth

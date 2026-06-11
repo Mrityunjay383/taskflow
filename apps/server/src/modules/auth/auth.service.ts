@@ -1,12 +1,16 @@
 import {prisma} from "../../config/prisma";
 import {comparePassword, hashPassword} from "../../utils/password";
 import {ServiceResult} from "../../types";
+import {
+    CreateUserInput,
+    CreateUserResult,
+    GetUserByIdInput,
+    GetUserByIdResult,
+    LoginUserInput,
+    LoginUserResult
+} from "./auth.types";
 
-export const createUser = async ({email, password}: { email: string, password: string }): Promise<ServiceResult<{
-    id: string;
-    email: string;
-    role: string
-}>> => {
+export const createUser = async ({email, password}: CreateUserInput): CreateUserResult => {
     const existing = await prisma.user.findUnique({
         where: {email},
     });
@@ -38,11 +42,7 @@ export const createUser = async ({email, password}: { email: string, password: s
     };
 };
 
-export const loginUser = async ({email, password}: { email: string, password: string }): Promise<ServiceResult<{
-    id: string;
-    email: string;
-    role: string
-}>> => {
+export const loginUser = async ({email, password}: LoginUserInput): LoginUserResult => {
     const user = await prisma.user.findUnique({
         where: {email},
     });
@@ -73,7 +73,7 @@ export const loginUser = async ({email, password}: { email: string, password: st
     };
 };
 
-export const getUserById = async ({id}: { id: string }): Promise<ServiceResult<any>> => {
+export const getUserById = async ({id}: GetUserByIdInput): GetUserByIdResult => {
     const user = await prisma.user.findUnique({
         where: {id},
         select: {

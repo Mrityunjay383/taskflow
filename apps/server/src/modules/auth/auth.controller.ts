@@ -1,10 +1,11 @@
-import {createUser, getUserById, loginUser} from "./auth.service";
+import * as AuthService from "./auth.service";
 import {generateToken} from "../../utils/jwt";
+import {AuthContext, RequestContext} from "../../types";
 
-export const signup = async ({body}: any) => {
+export const signup = async ({body}: RequestContext) => {
     const {email, password} = body;
 
-    const result = await createUser({email, password});
+    const result = await AuthService.createUser({email, password});
 
     if (!result.success) return result;
 
@@ -19,10 +20,10 @@ export const signup = async ({body}: any) => {
     };
 };
 
-export const login = async ({body}: any) => {
+export const login = async ({body}: RequestContext) => {
     const {email, password} = body;
 
-    const result = await loginUser({email, password});
+    const result = await AuthService.loginUser({email, password});
 
     if (!result.success) return result;
 
@@ -46,7 +47,7 @@ export const logout = async () => {
     };
 };
 
-export const me = async ({user}: any) => {
+export const me = async ({user}: AuthContext) => {
     if (!user?.userId) {
         return {
             success: false,
@@ -55,7 +56,7 @@ export const me = async ({user}: any) => {
         };
     }
 
-    const result = await getUserById({id: user.userId});
+    const result = await AuthService.getUserById({id: user.userId});
 
     return result;
 };

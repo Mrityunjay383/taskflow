@@ -1,12 +1,5 @@
 import { Request } from "express";
-
-export type RequestContext<TBody = any, TQuery = any, TParams = any> = {
-    body: TBody;
-    query: TQuery;
-    params: TParams;
-    user?: any;
-    headers: any;
-};
+import {RequestContext} from "../types";
 
 export const createContext = (req: Request): RequestContext => {
     return {
