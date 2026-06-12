@@ -2,12 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/AppError";
 import { Prisma } from "@prisma/client";
 
-export const errorMiddleware = (
-    err: any,
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const errorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
     console.error(err);
 
     // Prisma errors

@@ -13,8 +13,6 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use(errorMiddleware);
-
 app.get("/health", (_, res) => {
     res.status(200).json({
         success: true,
@@ -23,5 +21,7 @@ app.get("/health", (_, res) => {
 });
 
 app.use("/api", apiRoutes);
+
+app.use(errorMiddleware);
 
 export default app;

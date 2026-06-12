@@ -1,16 +1,8 @@
 import { z } from "zod";
 
-export const TaskStatusEnum = z.enum([
-    "TODO",
-    "IN_PROGRESS",
-    "COMPLETED",
-]);
+export const TaskStatusEnum = z.enum(["TODO", "IN_PROGRESS", "COMPLETED"]);
 
-export const TaskPriorityEnum = z.enum([
-    "LOW",
-    "MEDIUM",
-    "HIGH",
-]);
+export const TaskPriorityEnum = z.enum(["LOW", "MEDIUM", "HIGH"]);
 
 export const createTaskSchema = z.object({
     title: z.string().min(1, "Title is required"),

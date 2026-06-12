@@ -1,5 +1,5 @@
 import { Request } from "express";
-import {RequestContext} from "../types";
+import { RequestContext } from "../types";
 
 const createContext = (req: Request): RequestContext => {
     return {

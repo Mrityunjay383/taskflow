@@ -6,9 +6,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
         const cookieToken = req.cookies?.token;
 
         const authHeader = req.headers.authorization;
-        const headerToken = authHeader?.startsWith("Bearer ")
-            ? authHeader.split(" ")[1]
-            : null;
+        const headerToken = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
 
         const token = cookieToken || headerToken;
 
@@ -33,4 +31,4 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-export default auth
+export default auth;

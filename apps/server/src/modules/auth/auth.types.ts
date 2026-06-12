@@ -4,7 +4,6 @@ export type AuthUser = {
     role: string;
 };
 
-
 export type CreateUserInput = {
     email: string;
     password: string;
@@ -18,7 +17,6 @@ export type LoginUserInput = {
 export type GetUserByIdInput = {
     id: string;
 };
-
 
 export type CreateUserResult = Promise<AuthUser>;
 export type LoginUserResult = Promise<AuthUser>;

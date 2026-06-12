@@ -61,13 +61,14 @@ export type DeleteTaskInput = {
 
 export type CreateTaskResult = Promise<Task>;
 export type GetTasksResult = Promise<{
-    tasks: Task[], pagination: {
+    tasks: Task[];
+    pagination: {
         page: number;
         limit: number;
         total: number;
         totalPages: number;
-    }
+    };
 }>;
-export type GetTaskResult = Promise<Task>
+export type GetTaskResult = Promise<Task>;
 export type UpdateTaskResult = Promise<Task>;
 export type DeleteTaskResult = Promise<string>;

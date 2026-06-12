@@ -1,16 +1,18 @@
-import {prisma} from "../../config/prisma";
-import {comparePassword, hashPassword} from "../../utils/password";
+import { prisma } from "../../config/prisma";
+import { comparePassword, hashPassword } from "../../utils/password";
 import {
     CreateUserInput,
-    CreateUserResult, GetUserByIdInput, GetUserByIdResult,
+    CreateUserResult,
+    GetUserByIdInput,
+    GetUserByIdResult,
     LoginUserInput,
-    LoginUserResult
+    LoginUserResult,
 } from "./auth.types";
-import {AppError} from "../../utils/AppError";
+import { AppError } from "../../utils/AppError";
 
-export const createUser = async ({email, password}: CreateUserInput): CreateUserResult => {
+export const createUser = async ({ email, password }: CreateUserInput): CreateUserResult => {
     const existing = await prisma.user.findUnique({
-        where: {email},
+        where: { email },
     });
 
     if (existing) {
@@ -38,19 +40,19 @@ export const createUser = async ({email, password}: CreateUserInput): CreateUser
     };
 };
 
-export const loginUser = async ({email, password}: LoginUserInput): LoginUserResult => {
+export const loginUser = async ({ email, password }: LoginUserInput): LoginUserResult => {
     const user = await prisma.user.findUnique({
-        where: {email},
+        where: { email },
     });
 
     if (!user) {
-        throw new AppError("Invalid credentials", 400)
+        throw new AppError("Invalid credentials", 400);
     }
 
     const isValid = await comparePassword(password, user.password);
 
     if (!isValid) {
-        throw new AppError("Invalid credentials", 400)
+        throw new AppError("Invalid credentials", 400);
     }
 
     return {
@@ -60,8 +62,8 @@ export const loginUser = async ({email, password}: LoginUserInput): LoginUserRes
     };
 };
 
-export const getUserById = async ({id}: GetUserByIdInput): GetUserByIdResult => {
-    const existing = await prisma.user.findUnique({ where: {id}})
+export const getUserById = async ({ id }: GetUserByIdInput): GetUserByIdResult => {
+    const existing = await prisma.user.findUnique({ where: { id } });
 
     if (!existing) {
         throw new AppError("User not found", 404);
@@ -71,5 +73,5 @@ export const getUserById = async ({id}: GetUserByIdInput): GetUserByIdResult => 
         id: existing.id,
         email: existing.email,
         role: existing.role,
-    }
-}
+    };
+};

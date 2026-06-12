@@ -1,11 +1,11 @@
 import * as AuthService from "./auth.service";
-import {generateToken} from "../../utils/jwt";
-import {AuthContext, RequestContext} from "../../types";
+import { generateToken } from "../../utils/jwt";
+import { AuthContext, RequestContext } from "../../types";
 
-export const register = async ({body}: RequestContext) => {
-    const {email, password} = body;
+export const register = async ({ body }: RequestContext) => {
+    const { email, password } = body;
 
-    const result = await AuthService.createUser({email, password});
+    const result = await AuthService.createUser({ email, password });
 
     const token = generateToken(result.id);
 
@@ -17,10 +17,10 @@ export const register = async ({body}: RequestContext) => {
     };
 };
 
-export const login = async ({body}: RequestContext) => {
-    const {email, password} = body;
+export const login = async ({ body }: RequestContext) => {
+    const { email, password } = body;
 
-    const result = await AuthService.loginUser({email, password});
+    const result = await AuthService.loginUser({ email, password });
 
     const token = generateToken(result.id);
 
