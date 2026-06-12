@@ -3,8 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./middleware/error";
 
-import authRoutes from "./modules/auth/auth.routes";
-import taskRoutes from "./modules/task/task.routes";
+import apiRoutes from "./routes";
 
 const app = express();
 
@@ -23,7 +22,6 @@ app.get("/health", (_, res) => {
     });
 });
 
-app.use("/auth", authRoutes);
-app.use("/task", taskRoutes);
+app.use("/api", apiRoutes);
 
 export default app;
