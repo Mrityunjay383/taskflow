@@ -2,7 +2,7 @@ import {prisma} from "../../config/prisma";
 import {comparePassword, hashPassword} from "../../utils/password";
 import {
     CreateUserInput,
-    CreateUserResult,
+    CreateUserResult, GetUserByIdInput, GetUserByIdResult,
     LoginUserInput,
     LoginUserResult
 } from "./auth.types";
@@ -59,3 +59,17 @@ export const loginUser = async ({email, password}: LoginUserInput): LoginUserRes
         role: user.role,
     };
 };
+
+export const getUserById = async ({id}: GetUserByIdInput): GetUserByIdResult => {
+    const existing = await prisma.user.findUnique({ where: {id}})
+
+    if (!existing) {
+        throw new AppError("User not found", 404);
+    }
+
+    return {
+        id: existing.id,
+        email: existing.email,
+        role: existing.role,
+    }
+}

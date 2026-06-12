@@ -47,3 +47,9 @@ export const logout = async () => {
         message: "Logged out successfully",
     };
 };
+
+export const me = async ({ user }: AuthContext) => {
+    return AuthService.getUserById({
+        id: user.userId,
+    });
+};

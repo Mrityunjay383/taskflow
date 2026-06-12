@@ -14,4 +14,10 @@ router.post("/register", validate(registerSchema), auth.register);
 router.post("/login", validate(loginSchema), auth.login);
 router.post("/logout",authMiddleware, auth.logout);
 
+router.get(
+    "/me",
+    authMiddleware,
+    auth.me
+);
+
 export default router;
