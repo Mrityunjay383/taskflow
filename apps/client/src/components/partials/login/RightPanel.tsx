@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { loginSchema, LoginFormValues } from "@/features/auth/auth.schema";
 import { useLoginMutation } from "@/features/auth/auth.mutations";
+import Link from "next/link";
 
 import { CheckSquare, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
