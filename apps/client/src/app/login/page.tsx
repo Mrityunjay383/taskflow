@@ -1,47 +1,66 @@
 "use client";
 
-import { useState } from "react";
-import { login } from "@/lib/auth.api";
 import { useRouter } from "next/navigation";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { loginSchema, LoginFormValues } from "@/features/auth/auth.schema";
+
+import { useLoginMutation } from "@/features/auth/auth.mutations";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { Button } from "@/components/ui/button";
+
+import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
     const router = useRouter();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const loginMutation = useLoginMutation();
 
-    const handleLogin = async () => {
+    const form = useForm<LoginFormValues>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+    });
+
+    const onSubmit = async (values: LoginFormValues) => {
         try {
-            const res = await login({ email, password });
+            await loginMutation.mutateAsync(values);
 
-            if (res.data.success) {
-                router.push("/dashboard");
-            }
-        } catch (err) {
-            console.error(err);
+            router.push("/dashboard");
+        } catch (error) {
+            console.error(error);
         }
     };
 
     return (
-        <div className="h-screen flex items-center justify-center">
-            <div className="space-y-3 w-80">
-                <input
-                    className="border p-2 w-full"
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+        <div className="bg-rose-200 flex h-screen items-center justify-center">
+            <Card className="w-[400px]">
+                <CardHeader>
+                    <CardTitle>Login</CardTitle>
+                </CardHeader>
 
-                <input
-                    className="border p-2 w-full"
-                    placeholder="Password"
-                    type="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <CardContent>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                        <Input placeholder="Email" {...form.register("email")} />
 
-                <button className="bg-black text-white p-2 w-full" onClick={handleLogin}>
-                    Login
-                </button>
-            </div>
+                        <Input
+                            type="password"
+                            placeholder="Password"
+                            {...form.register("password")}
+                        />
+
+                        <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
+                            {loginMutation.isPending ? "Logging in..." : "Login"}
+                        </Button>
+                    </form>
+                </CardContent>
+            </Card>
         </div>
     );
 }

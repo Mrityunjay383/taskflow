@@ -14,14 +14,14 @@ export default function DashboardPage() {
 function DashboardContent() {
     const { data: tasksData, isLoading, error } = useTasks();
 
-    if (isLoading) return <Loading />;
-    if (error) return <ErrorMessage />;
+    // if (isLoading) return <Loading />;
+    // if (error) return <ErrorMessage />;
     if (!tasksData) return null;
 
     return (
         <>
             {tasksData.tasks.map((task) => (
-                <TaskCard key={task.id} task={task} />
+                <div>task.name</div>
             ))}
         </>
     );

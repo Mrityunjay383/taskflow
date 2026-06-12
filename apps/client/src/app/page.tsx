@@ -1,3 +1,3 @@
-export default function Home() {
-    return <div className=""></div>;
+export default function HomePage() {
+    return <div className="flex h-screen items-center justify-center">Redirecting...</div>;
 }

@@ -1,15 +1,21 @@
 "use client";
 
-import { ReactNode, createContext, useContext } from "react";
+import { createContext, useContext } from "react";
 import { useCurrentUser } from "@/features/auth/auth.queries";
 
 const AuthContext = createContext<any>(null);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export const AuthProvider = ({ children }: any) => {
     const query = useCurrentUser();
 
-    return <AuthContext.Provider value={query}>{children}</AuthContext.Provider>;
-}
+    const value = {
+        user: query.data ?? null,
+        isLoading: query.isLoading,
+        isAuthenticated: !!query.data,
+    };
+
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
 
 export const useAuth = () => {
     return useContext(AuthContext);

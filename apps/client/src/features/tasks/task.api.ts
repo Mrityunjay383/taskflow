@@ -1,4 +1,4 @@
-import { api } from "./api";
+import { api } from "@/lib/api";
 import { ApiResponse } from "@/lib/types";
 import { GetTasksResponse } from "@/features/tasks/task.types";
 

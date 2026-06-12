@@ -49,7 +49,12 @@ export const logout = async () => {
 };
 
 export const me = async ({ user }: AuthContext) => {
-    return AuthService.getUserById({
+    const existed = AuthService.getUserById({
         id: user.userId,
     });
+
+    return {
+        success: true,
+        data: existed,
+    };
 };
