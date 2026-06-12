@@ -1,6 +1,12 @@
 import { api } from "./api";
+import { ApiResponse } from "@/lib/types";
+import { GetTasksResponse } from "@/features/tasks/task.types";
 
-export const getTasks = (params?: any) => api.get("/tasks", { params });
+export const getTasks = async (): Promise<GetTasksResponse> => {
+    const response = await api.get<ApiResponse<GetTasksResponse>>("/task");
+
+    return response.data.data!;
+};
 
 export const createTask = (data: any) => api.post("/tasks", data);
 

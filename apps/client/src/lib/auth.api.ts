@@ -6,3 +6,5 @@ export const register = (data: { email: string; password: string }) =>
     api.post("/auth/register", data);
 
 export const logout = () => api.post("/auth/logout");
+
+export const getCurrentUser = () => api.get("/auth/me");
