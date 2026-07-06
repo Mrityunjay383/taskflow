@@ -1,12 +1,12 @@
 export type AuthUser = {
     id: string;
-    email: string;
-    role: string;
+    userName: string;
 };
 
 export type CreateUserInput = {
     email: string;
     password: string;
+    userName: string;
 };
 
 export type LoginUserInput = {

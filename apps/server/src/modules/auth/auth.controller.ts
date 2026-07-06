@@ -3,9 +3,9 @@ import { generateToken } from "../../utils/jwt";
 import { AuthContext, RequestContext } from "../../types";
 
 export const register = async ({ body }: RequestContext) => {
-    const { email, password } = body;
+    const { email, password, userName } = body;
 
-    const result = await AuthService.createUser({ email, password });
+    const result = await AuthService.createUser({ email, password, userName });
 
     const token = generateToken(result.id);
 
@@ -28,8 +28,7 @@ export const login = async ({ body }: RequestContext) => {
         success: true,
         data: {
             id: result.id,
-            email: result.email,
-            role: result.role,
+            userName: result.userName,
         },
         auth: {
             token,

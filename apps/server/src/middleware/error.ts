@@ -41,6 +41,14 @@ export const errorMiddleware = (err: any, req: Request, res: Response, next: Nex
         });
     }
 
+    // Express errors that already have a status
+    if (err.status || err.statusCode) {
+        return res.status(err.status || err.statusCode).json({
+            success: false,
+            message: err.message,
+        });
+    }
+
     // fallback
     return res.status(500).json({
         success: false,

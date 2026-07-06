@@ -10,7 +10,11 @@ import {
 } from "./auth.types";
 import { AppError } from "../../utils/AppError";
 
-export const createUser = async ({ email, password }: CreateUserInput): CreateUserResult => {
+export const createUser = async ({
+    email,
+    password,
+    userName,
+}: CreateUserInput): CreateUserResult => {
     const existing = await prisma.user.findUnique({
         where: { email },
     });
@@ -25,18 +29,17 @@ export const createUser = async ({ email, password }: CreateUserInput): CreateUs
         data: {
             email,
             password: hashed,
+            userName,
         },
         select: {
             id: true,
-            email: true,
-            role: true,
+            userName: true,
         },
     });
 
     return {
         id: user.id,
-        email: user.email,
-        role: user.role,
+        userName: user.userName,
     };
 };
 
@@ -57,8 +60,7 @@ export const loginUser = async ({ email, password }: LoginUserInput): LoginUserR
 
     return {
         id: user.id,
-        email: user.email,
-        role: user.role,
+        userName: user.userName,
     };
 };
 
@@ -71,7 +73,6 @@ export const getUserById = async ({ id }: GetUserByIdInput): GetUserByIdResult =
 
     return {
         id: existing.id,
-        email: existing.email,
-        role: existing.role,
+        userName: existing.userName,
     };
 };
