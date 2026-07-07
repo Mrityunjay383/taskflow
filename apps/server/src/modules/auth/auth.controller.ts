@@ -2,6 +2,18 @@ import * as AuthService from "./auth.service";
 import { generateToken } from "../../utils/jwt";
 import { AuthContext, RequestContext } from "../../types";
 
+export const checkUserName = async ({ query }: RequestContext) => {
+    const { userName } = query;
+
+    const result = await AuthService.isAvailable({ userName });
+
+    return {
+        success: true,
+        statusCode: 200,
+        data: result,
+    };
+};
+
 export const register = async ({ body }: RequestContext) => {
     const { email, password, userName } = body;
 

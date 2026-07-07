@@ -3,6 +3,10 @@ export type AuthUser = {
     userName: string;
 };
 
+export type IsUniqueUserInput = {
+    userName: string;
+};
+
 export type CreateUserInput = {
     email: string;
     password: string;
@@ -19,5 +23,6 @@ export type GetUserByIdInput = {
 };
 
 export type CreateUserResult = Promise<AuthUser>;
+export type IsUniqueUserResult = Promise<{ available: boolean }>;
 export type LoginUserResult = Promise<AuthUser>;
 export type GetUserByIdResult = Promise<AuthUser>;
