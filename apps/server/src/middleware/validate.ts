@@ -20,7 +20,7 @@ export const validate =
         }
 
         // overwrite clean data
-        (req as any)[target] = result.data;
+        // (req as any)[target] = result.data;
 
         next();
     };

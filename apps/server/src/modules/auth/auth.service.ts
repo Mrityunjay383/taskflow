@@ -5,18 +5,47 @@ import {
     CreateUserResult,
     GetUserByIdInput,
     GetUserByIdResult,
+    IsUniqueUserInput,
+    IsUniqueUserResult,
     LoginUserInput,
     LoginUserResult,
 } from "./auth.types";
 import { AppError } from "../../utils/AppError";
 
-export const createUser = async ({ email, password }: CreateUserInput): CreateUserResult => {
+export const isAvailable = async ({ userName }: IsUniqueUserInput): IsUniqueUserResult => {
     const existing = await prisma.user.findUnique({
-        where: { email },
+        where: {
+            userName,
+        },
+        select: {
+            id: true,
+        },
+    });
+
+    return {
+        available: !existing,
+    };
+};
+
+export const createUser = async ({
+    email,
+    password,
+    userName,
+}: CreateUserInput): CreateUserResult => {
+    const existing = await prisma.user.findFirst({
+        where: {
+            OR: [{ email }, { userName }],
+        },
     });
 
     if (existing) {
-        throw new AppError("User already exists", 400);
+        if (existing.email === email) {
+            throw new AppError("Email already exists", 400);
+        }
+
+        if (existing.userName === userName) {
+            throw new AppError("Username already exists", 400);
+        }
     }
 
     const hashed = await hashPassword(password);
@@ -25,18 +54,17 @@ export const createUser = async ({ email, password }: CreateUserInput): CreateUs
         data: {
             email,
             password: hashed,
+            userName,
         },
         select: {
             id: true,
-            email: true,
-            role: true,
+            userName: true,
         },
     });
 
     return {
         id: user.id,
-        email: user.email,
-        role: user.role,
+        userName: user.userName,
     };
 };
 
@@ -57,8 +85,7 @@ export const loginUser = async ({ email, password }: LoginUserInput): LoginUserR
 
     return {
         id: user.id,
-        email: user.email,
-        role: user.role,
+        userName: user.userName,
     };
 };
 
@@ -71,7 +98,6 @@ export const getUserById = async ({ id }: GetUserByIdInput): GetUserByIdResult =
 
     return {
         id: existing.id,
-        email: existing.email,
-        role: existing.role,
+        userName: existing.userName,
     };
 };
