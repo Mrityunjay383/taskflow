@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useCheckUserName } from "@/features/auth/auth.queries";
+import { useDebounce } from "@/hooks/useDebounce";
 
 const RegisterPanel = () => {
     const router = useRouter();
@@ -21,8 +23,24 @@ const RegisterPanel = () => {
         defaultValues: { userName: "", email: "", password: "" },
     });
 
+    const watchedUserName = form.watch("userName");
+
+    const debouncedUserName = useDebounce(watchedUserName, 500);
+
+    const { data: userNameResult, isLoading: isCheckingUserName } =
+        useCheckUserName(debouncedUserName);
+
     const onSubmit = async (values: RegisterFormValues) => {
         try {
+            if (userNameResult && !userNameResult.available) {
+                form.setError("userName", {
+                    type: "manual",
+                    message: "Username is already taken",
+                });
+
+                return;
+            }
+
             await registerMutation.mutateAsync(values);
             router.push("/dashboard");
         } catch (error) {
@@ -77,6 +95,24 @@ const RegisterPanel = () => {
                         />
                         {nameError && (
                             <p className="text-xs text-red-400 font-medium">{nameError}</p>
+                        )}
+                        {!nameError && watchedUserName.length >= 3 && (
+                            <div className="flex items-center gap-2 text-xs">
+                                {isCheckingUserName ? (
+                                    <>
+                                        <Loader2 className="h-3 w-3 animate-spin text-gray-400" />
+                                        <span className="text-gray-400">
+                                            Checking availability...
+                                        </span>
+                                    </>
+                                ) : userNameResult?.available ? (
+                                    <span className="text-green-400">✓ Username is available</span>
+                                ) : (
+                                    <span className="text-red-400">
+                                        ✗ Username is already taken
+                                    </span>
+                                )}
+                            </div>
                         )}
                     </div>
 

@@ -10,10 +10,16 @@ export const useCurrentUser = () => {
 };
 
 export const useCheckUserName = (userName: string) => {
+    const normalized = userName.trim();
+
     return useQuery({
-        queryKey: ["check-username", userName],
-        queryFn: () => checkUserName({ userName }),
-        enabled: userName.trim().length >= 3,
+        queryKey: ["check-username", normalized],
+        queryFn: () =>
+            checkUserName({
+                userName: normalized,
+            }),
+        enabled: normalized.length >= 3,
         retry: false,
+        staleTime: 5 * 60 * 1000,
     });
 };
