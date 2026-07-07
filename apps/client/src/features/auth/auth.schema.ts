@@ -8,7 +8,7 @@ export const loginSchema = z.object({
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const registerSchema = z.object({
-    name: z.string(),
+    userName: z.string(),
     email: z.email(),
     password: z.string().min(6),
 });

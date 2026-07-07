@@ -6,14 +6,14 @@ export function proxy(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
 
     if (pathname === "/") {
-        return NextResponse.redirect(new URL(token ? "/dashboard" : "/login", request.url));
+        return NextResponse.redirect(new URL(token ? "/dashboard" : "/auth", request.url));
     }
 
     if (pathname.startsWith("/dashboard") && !token) {
-        return NextResponse.redirect(new URL("/login", request.url));
+        return NextResponse.redirect(new URL("/auth", request.url));
     }
 
-    const isAuthPage = pathname.startsWith("/login") || pathname.startsWith("/register");
+    const isAuthPage = pathname.startsWith("/auth") || pathname.startsWith("/register");
 
     if (isAuthPage && token) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
@@ -23,5 +23,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/", "/login", "/register", "/dashboard/:path*"],
+    matcher: ["/", "/auth", "/register", "/dashboard/:path*"],
 };

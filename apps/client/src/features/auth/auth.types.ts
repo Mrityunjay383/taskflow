@@ -4,6 +4,12 @@ export type User = {
     role: string;
 };
 
+export type RegisterPayload = {
+    email: string;
+    password: string;
+    userName: string;
+};
+
 export type LoginPayload = {
     email: string;
     password: string;

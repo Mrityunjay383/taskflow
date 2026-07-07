@@ -1,12 +1,12 @@
-import LeftPanel from "@/components/partials/login/LeftPanel";
-import RightPanel from "@/components/partials/login/RightPanel";
+import LeftPanel from "@/components/partials/auth/LeftPanel";
+import LoginPanel from "@/components/partials/auth/LoginPanel";
 
 export default function LoginPage() {
     return (
         <div className="min-h-screen bg-[#0F1629] flex">
             <LeftPanel />
 
-            <RightPanel />
+            <LoginPanel />
         </div>
     );
 }

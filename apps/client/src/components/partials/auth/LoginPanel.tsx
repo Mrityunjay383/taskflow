@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-export default function RightPanel({}) {
+export default function LoginPanel({}) {
     const router = useRouter();
     const loginMutation = useLoginMutation();
 
