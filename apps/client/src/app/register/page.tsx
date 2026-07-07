@@ -3,7 +3,7 @@ import RegisterPanel from "@/components/partials/auth/RegisterPanel";
 
 export default function RegisterPage() {
     return (
-        <div>
+        <div className="min-h-screen bg-[#0F1629] flex">
             <LeftPanel />
 
             <RegisterPanel />

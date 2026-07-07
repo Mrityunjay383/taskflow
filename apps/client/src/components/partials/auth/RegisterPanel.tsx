@@ -10,6 +10,7 @@ import { useRegisterMutation } from "@/features/auth/auth.mutations";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 
 const RegisterPanel = () => {
     const router = useRouter();
@@ -85,7 +86,7 @@ const RegisterPanel = () => {
                             htmlFor="email"
                             className="text-[11px] font-semibold uppercase tracking-wider text-[#4A5580]"
                         >
-                            Work email
+                            Email
                         </Label>
                         <Input
                             id="email"
@@ -140,19 +141,19 @@ const RegisterPanel = () => {
 
                     <p className="text-[10px] text-[#3A4A7A] text-center leading-relaxed">
                         By creating an account you agree to our{" "}
-                        <a
+                        <Link
                             href="/terms"
                             className="text-indigo-500 hover:text-indigo-400 transition-colors"
                         >
                             Terms of Service
-                        </a>{" "}
+                        </Link>{" "}
                         and{" "}
-                        <a
+                        <Link
                             href="/privacy"
                             className="text-indigo-500 hover:text-indigo-400 transition-colors"
                         >
                             Privacy Policy
-                        </a>
+                        </Link>
                         .
                     </p>
                 </form>
@@ -193,12 +194,12 @@ const RegisterPanel = () => {
 
                 <p className="text-center text-sm text-[#4A5580]">
                     Already have an account?{" "}
-                    <a
+                    <Link
                         href="/login"
                         className="text-indigo-400 font-semibold hover:text-indigo-300 transition-colors"
                     >
                         Sign in
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>

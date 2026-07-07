@@ -1,7 +1,10 @@
 export type User = {
     id: string;
     email: string;
-    role: string;
+};
+
+export type CheckUserName = {
+    available: boolean;
 };
 
 export type RegisterPayload = {
@@ -13,4 +16,8 @@ export type RegisterPayload = {
 export type LoginPayload = {
     email: string;
     password: string;
+};
+
+export type CheckUserNamePayload = {
+    userName: string;
 };
