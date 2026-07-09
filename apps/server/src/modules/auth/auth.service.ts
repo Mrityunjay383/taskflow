@@ -11,6 +11,7 @@ import {
     LoginUserResult,
 } from "./auth.types";
 import { AppError } from "../../utils/AppError";
+import { z } from "zod";
 
 export const isAvailable = async ({ userName }: IsUniqueUserInput): IsUniqueUserResult => {
     const existing = await prisma.user.findUnique({
@@ -40,11 +41,19 @@ export const createUser = async ({
 
     if (existing) {
         if (existing.email === email) {
-            throw new AppError("Email already exists", 400);
+            throw new AppError({
+                message: "Email already exist",
+                errorCode: "EMAIL_EXISTS",
+                statusCode: 400,
+            });
         }
 
         if (existing.userName === userName) {
-            throw new AppError("Username already exists", 400);
+            throw new AppError({
+                message: "Username already exists",
+                errorCode: "USERNAME_EXISTS",
+                statusCode: 400,
+            });
         }
     }
 
@@ -68,19 +77,33 @@ export const createUser = async ({
     };
 };
 
-export const loginUser = async ({ email, password }: LoginUserInput): LoginUserResult => {
-    const user = await prisma.user.findUnique({
-        where: { email },
-    });
+export const loginUser = async ({ identifier, password }: LoginUserInput): LoginUserResult => {
+    const isEmail = z.email().safeParse(identifier).success;
+
+    const user = isEmail
+        ? await prisma.user.findUnique({
+              where: { email: identifier },
+          })
+        : await prisma.user.findUnique({
+              where: { userName: identifier },
+          });
 
     if (!user) {
-        throw new AppError("Invalid credentials", 400);
+        throw new AppError({
+            message: "Invalid email/username or password",
+            errorCode: "INVALID_CREDS",
+            statusCode: 400,
+        });
     }
 
     const isValid = await comparePassword(password, user.password);
 
     if (!isValid) {
-        throw new AppError("Invalid credentials", 400);
+        throw new AppError({
+            message: "Invalid email/username or password",
+            errorCode: "INVALID_CREDS",
+            statusCode: 400,
+        });
     }
 
     return {
@@ -93,7 +116,11 @@ export const getUserById = async ({ id }: GetUserByIdInput): GetUserByIdResult =
     const existing = await prisma.user.findUnique({ where: { id } });
 
     if (!existing) {
-        throw new AppError("User not found", 404);
+        throw new AppError({
+            message: "User not found",
+            errorCode: "NO_USER_FOUND",
+            statusCode: 404,
+        });
     }
 
     return {

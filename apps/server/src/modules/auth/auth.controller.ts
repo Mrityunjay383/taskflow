@@ -25,27 +25,29 @@ export const register = async ({ body }: RequestContext) => {
         success: true,
         statusCode: 201,
         data: result,
-        token,
+        auth: {
+            token,
+        },
     };
 };
 
 export const login = async ({ body }: RequestContext) => {
-    const { email, password } = body;
+    const { identifier, password } = body;
 
-    const result = await AuthService.loginUser({ email, password });
+    const result = await AuthService.loginUser({
+        identifier,
+        password,
+    });
 
     const token = generateToken(result.id);
 
     return {
         success: true,
-        data: {
-            id: result.id,
-            userName: result.userName,
-        },
+        statusCode: 201,
+        data: result,
         auth: {
             token,
         },
-        message: "Login successful",
     };
 };
 
@@ -55,7 +57,6 @@ export const logout = async () => {
         auth: {
             clearToken: true,
         },
-        message: "Logged out successfully",
     };
 };
 
