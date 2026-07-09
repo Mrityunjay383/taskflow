@@ -90,7 +90,7 @@ export const loginUser = async ({ identifier, password }: LoginUserInput): Login
 
     if (!user) {
         throw new AppError({
-            message: "Provided creds are not correct",
+            message: "Invalid email/username or password",
             errorCode: "INVALID_CREDS",
             statusCode: 400,
         });
@@ -100,7 +100,7 @@ export const loginUser = async ({ identifier, password }: LoginUserInput): Login
 
     if (!isValid) {
         throw new AppError({
-            message: "Provided creds are not correct",
+            message: "Invalid email/username or password",
             errorCode: "INVALID_CREDS",
             statusCode: 400,
         });

@@ -20,19 +20,38 @@ export default function LoginPanel({}) {
 
     const form = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
-        defaultValues: { email: "", password: "" },
+        defaultValues: { identifier: "", password: "" },
     });
 
     const onSubmit = async (values: LoginFormValues) => {
         try {
             await loginMutation.mutateAsync(values);
-            router.push("/dashboard");
-        } catch (error) {
-            console.error(error);
+
+            router.replace("/dashboard");
+        } catch (error: any) {
+            const { message, errorCode } = error?.response?.data;
+
+            switch (errorCode) {
+                case "INVALID_CREDS":
+                    form.setError("identifier", {
+                        type: "server",
+                        message,
+                    });
+
+                    form.setError("password", {
+                        type: "server",
+                        message,
+                    });
+
+                    break;
+
+                default:
+                    console.error(error);
+            }
         }
     };
 
-    const emailError = form.formState.errors.email?.message;
+    const identifierError = form.formState.errors.identifier?.message;
     const passwordError = form.formState.errors.password?.message;
 
     return (
@@ -60,22 +79,22 @@ export default function LoginPanel({}) {
                     {/* Email */}
                     <div className="flex flex-col gap-1.5">
                         <Label
-                            htmlFor="email"
+                            htmlFor="identifier"
                             className="text-[11px] font-semibold uppercase tracking-wider text-[#4A5580]"
                         >
                             Email / UserName
                         </Label>
                         <Input
-                            id="email"
-                            type="email"
-                            placeholder="you@company.com"
+                            id="identifier"
+                            type="text"
+                            placeholder="Email or username"
                             className={`bg-[#1E2A4A] border-[#2A3A6A] text-white placeholder:text-[#3A4A7A] focus-visible:ring-indigo-500/40 focus-visible:border-indigo-500 h-11 rounded-lg ${
-                                emailError ? "border-red-500 focus-visible:border-red-500" : ""
+                                identifierError ? "border-red-500 focus-visible:border-red-500" : ""
                             }`}
-                            {...form.register("email")}
+                            {...form.register("identifier")}
                         />
-                        {emailError && (
-                            <p className="text-xs text-red-400 font-medium">{emailError}</p>
+                        {identifierError && (
+                            <p className="text-xs text-red-400 font-medium">{identifierError}</p>
                         )}
                     </div>
 
@@ -140,7 +159,7 @@ export default function LoginPanel({}) {
                         href="/register"
                         className="text-indigo-400 font-semibold hover:text-indigo-300 transition-colors"
                     >
-                        Create workspace
+                        Create
                     </Link>
                 </p>
             </div>
