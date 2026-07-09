@@ -31,19 +31,40 @@ const RegisterPanel = () => {
         useCheckUserName(debouncedUserName);
 
     const onSubmit = async (values: RegisterFormValues) => {
+        if (userNameResult && !userNameResult.available) {
+            form.setError("userName", {
+                type: "manual",
+                message: "Username is already taken",
+            });
+
+            return;
+        }
+
         try {
-            if (userNameResult && !userNameResult.available) {
-                form.setError("userName", {
-                    type: "manual",
-                    message: "Username is already taken",
+            await registerMutation.mutateAsync(values);
+
+            router.replace("/dashboard");
+        } catch (error: any) {
+            const { message, errorCode } = error?.response?.data;
+
+            if (errorCode === "EMAIL_EXISTS") {
+                form.setError("email", {
+                    type: "server",
+                    message,
                 });
 
                 return;
             }
 
-            await registerMutation.mutateAsync(values);
-            router.push("/dashboard");
-        } catch (error) {
+            if (errorCode === "USERNAME_EXISTS") {
+                form.setError("userName", {
+                    type: "server",
+                    message,
+                });
+
+                return;
+            }
+
             console.error(error);
         }
     };
@@ -149,7 +170,7 @@ const RegisterPanel = () => {
                         <Input
                             id="password"
                             type="password"
-                            placeholder="Min. 8 characters"
+                            placeholder="Min. 6 characters"
                             className={`bg-[#1E2A4A] border-[#2A3A6A] text-white placeholder:text-[#3A4A7A] focus-visible:ring-indigo-500/40 focus-visible:border-indigo-500 h-11 rounded-lg ${
                                 passwordError ? "border-red-500 focus-visible:border-red-500" : ""
                             }`}
@@ -201,31 +222,31 @@ const RegisterPanel = () => {
                         or
                         <Separator className="flex-1 bg-[#1E2A4A]" />
                     </div>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full h-11 bg-transparent border-[#2A3A6A] text-[#8B9CC8] hover:border-[#3A4A7A] hover:text-white hover:bg-transparent rounded-lg gap-2"
-                    >
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path
-                                d="M15.68 8.18c0-.57-.05-1.12-.14-1.64H8v3.1h4.3a3.68 3.68 0 01-1.6 2.41v2h2.58c1.51-1.39 2.4-3.44 2.4-5.87z"
-                                fill="#4285F4"
-                            />
-                            <path
-                                d="M8 16c2.16 0 3.97-.71 5.3-1.94l-2.58-2a4.78 4.78 0 01-2.72.76c-2.09 0-3.86-1.41-4.5-3.31H.84v2.07A8 8 0 008 16z"
-                                fill="#34A853"
-                            />
-                            <path
-                                d="M3.5 9.51A4.82 4.82 0 013.25 8c0-.53.09-1.04.25-1.51V4.42H.84A8 8 0 000 8c0 1.29.31 2.51.84 3.58l2.66-2.07z"
-                                fill="#FBBC05"
-                            />
-                            <path
-                                d="M8 3.18c1.18 0 2.24.4 3.07 1.2l2.3-2.3A8 8 0 00.84 4.42L3.5 6.49C4.14 4.59 5.91 3.18 8 3.18z"
-                                fill="#EA4335"
-                            />
-                        </svg>
-                        Sign up with Google
-                    </Button>
+                    {/*<Button*/}
+                    {/*    type="button"*/}
+                    {/*    variant="outline"*/}
+                    {/*    className="w-full h-11 bg-transparent border-[#2A3A6A] text-[#8B9CC8] hover:border-[#3A4A7A] hover:text-white hover:bg-transparent rounded-lg gap-2"*/}
+                    {/*>*/}
+                    {/*    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">*/}
+                    {/*        <path*/}
+                    {/*            d="M15.68 8.18c0-.57-.05-1.12-.14-1.64H8v3.1h4.3a3.68 3.68 0 01-1.6 2.41v2h2.58c1.51-1.39 2.4-3.44 2.4-5.87z"*/}
+                    {/*            fill="#4285F4"*/}
+                    {/*        />*/}
+                    {/*        <path*/}
+                    {/*            d="M8 16c2.16 0 3.97-.71 5.3-1.94l-2.58-2a4.78 4.78 0 01-2.72.76c-2.09 0-3.86-1.41-4.5-3.31H.84v2.07A8 8 0 008 16z"*/}
+                    {/*            fill="#34A853"*/}
+                    {/*        />*/}
+                    {/*        <path*/}
+                    {/*            d="M3.5 9.51A4.82 4.82 0 013.25 8c0-.53.09-1.04.25-1.51V4.42H.84A8 8 0 000 8c0 1.29.31 2.51.84 3.58l2.66-2.07z"*/}
+                    {/*            fill="#FBBC05"*/}
+                    {/*        />*/}
+                    {/*        <path*/}
+                    {/*            d="M8 3.18c1.18 0 2.24.4 3.07 1.2l2.3-2.3A8 8 0 00.84 4.42L3.5 6.49C4.14 4.59 5.91 3.18 8 3.18z"*/}
+                    {/*            fill="#EA4335"*/}
+                    {/*        />*/}
+                    {/*    </svg>*/}
+                    {/*    Sign up with Google*/}
+                    {/*</Button>*/}
                 </div>
 
                 <p className="text-center text-sm text-[#4A5580]">

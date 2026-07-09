@@ -40,11 +40,19 @@ export const createUser = async ({
 
     if (existing) {
         if (existing.email === email) {
-            throw new AppError("Email already exists", 400);
+            throw new AppError({
+                message: "Email already exist",
+                errorCode: "EMAIL_EXISTS",
+                statusCode: 400,
+            });
         }
 
         if (existing.userName === userName) {
-            throw new AppError("Username already exists", 400);
+            throw new AppError({
+                message: "Username already exists",
+                errorCode: "USERNAME_EXISTS",
+                statusCode: 400,
+            });
         }
     }
 
@@ -74,13 +82,21 @@ export const loginUser = async ({ email, password }: LoginUserInput): LoginUserR
     });
 
     if (!user) {
-        throw new AppError("Invalid credentials", 400);
+        throw new AppError({
+            message: "User not found",
+            errorCode: "INVALID_CREDS",
+            statusCode: 404,
+        });
     }
 
     const isValid = await comparePassword(password, user.password);
 
     if (!isValid) {
-        throw new AppError("Invalid credentials", 400);
+        throw new AppError({
+            message: "Incorrect Password",
+            errorCode: "INVALID_CREDS",
+            statusCode: 400,
+        });
     }
 
     return {
@@ -93,7 +109,7 @@ export const getUserById = async ({ id }: GetUserByIdInput): GetUserByIdResult =
     const existing = await prisma.user.findUnique({ where: { id } });
 
     if (!existing) {
-        throw new AppError("User not found", 404);
+        throw new AppError({ message: "User not found", errorCode: "NO_USER", statusCode: 404 });
     }
 
     return {

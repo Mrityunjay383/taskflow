@@ -2,23 +2,25 @@
 
 import { ReactNode, useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 import { useAuth } from "@/providers/auth-provider";
 
-export default function ProtectedRoute({ children }: { children: ReactNode }) {
+export default function AuthGuard({ children }: { children: ReactNode }) {
     const router = useRouter();
-    const { data, isLoading, isError } = useAuth();
+
+    const { isLoading, isAuthenticated } = useAuth();
 
     useEffect(() => {
-        if (!isLoading && (isError || !data)) {
+        if (!isLoading && !isAuthenticated) {
             router.replace("/login");
         }
-    }, [isLoading, isError, data, router]);
+    }, [isLoading, isAuthenticated, router]);
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    if (!data) {
+    if (!isAuthenticated) {
         return null;
     }
 

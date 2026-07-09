@@ -8,10 +8,8 @@ export const useLoginMutation = () => {
     return useMutation({
         mutationFn: login,
 
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: ["me"],
-            });
+        onSuccess: (user) => {
+            queryClient.setQueryData(["me"], user);
         },
     });
 };
@@ -22,10 +20,8 @@ export const useRegisterMutation = () => {
     return useMutation({
         mutationFn: register,
 
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: ["me"],
-            });
+        onSuccess: (user) => {
+            queryClient.setQueryData(["me"], user);
         },
     });
 };

@@ -25,7 +25,9 @@ export const register = async ({ body }: RequestContext) => {
         success: true,
         statusCode: 201,
         data: result,
-        token,
+        auth: {
+            token,
+        },
     };
 };
 
@@ -38,14 +40,11 @@ export const login = async ({ body }: RequestContext) => {
 
     return {
         success: true,
-        data: {
-            id: result.id,
-            userName: result.userName,
-        },
+        statusCode: 201,
+        data: result,
         auth: {
             token,
         },
-        message: "Login successful",
     };
 };
 
@@ -55,7 +54,6 @@ export const logout = async () => {
         auth: {
             clearToken: true,
         },
-        message: "Logged out successfully",
     };
 };
 
