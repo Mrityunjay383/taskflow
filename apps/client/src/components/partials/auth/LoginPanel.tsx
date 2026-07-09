@@ -63,7 +63,7 @@ export default function LoginPanel({}) {
                             htmlFor="email"
                             className="text-[11px] font-semibold uppercase tracking-wider text-[#4A5580]"
                         >
-                            Email
+                            Email / UserName
                         </Label>
                         <Input
                             id="email"

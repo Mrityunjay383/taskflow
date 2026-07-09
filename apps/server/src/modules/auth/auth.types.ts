@@ -14,7 +14,7 @@ export type CreateUserInput = {
 };
 
 export type LoginUserInput = {
-    email: string;
+    identifier: string;
     password: string;
 };
 

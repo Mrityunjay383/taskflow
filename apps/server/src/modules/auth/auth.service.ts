@@ -11,6 +11,7 @@ import {
     LoginUserResult,
 } from "./auth.types";
 import { AppError } from "../../utils/AppError";
+import { z } from "zod";
 
 export const isAvailable = async ({ userName }: IsUniqueUserInput): IsUniqueUserResult => {
     const existing = await prisma.user.findUnique({
@@ -76,16 +77,22 @@ export const createUser = async ({
     };
 };
 
-export const loginUser = async ({ email, password }: LoginUserInput): LoginUserResult => {
-    const user = await prisma.user.findUnique({
-        where: { email },
-    });
+export const loginUser = async ({ identifier, password }: LoginUserInput): LoginUserResult => {
+    const isEmail = z.email().safeParse(identifier).success;
+
+    const user = isEmail
+        ? await prisma.user.findUnique({
+              where: { email: identifier },
+          })
+        : await prisma.user.findUnique({
+              where: { userName: identifier },
+          });
 
     if (!user) {
         throw new AppError({
-            message: "User not found",
+            message: "Provided creds are not correct",
             errorCode: "INVALID_CREDS",
-            statusCode: 404,
+            statusCode: 400,
         });
     }
 
@@ -93,7 +100,7 @@ export const loginUser = async ({ email, password }: LoginUserInput): LoginUserR
 
     if (!isValid) {
         throw new AppError({
-            message: "Incorrect Password",
+            message: "Provided creds are not correct",
             errorCode: "INVALID_CREDS",
             statusCode: 400,
         });
@@ -109,7 +116,11 @@ export const getUserById = async ({ id }: GetUserByIdInput): GetUserByIdResult =
     const existing = await prisma.user.findUnique({ where: { id } });
 
     if (!existing) {
-        throw new AppError({ message: "User not found", errorCode: "NO_USER", statusCode: 404 });
+        throw new AppError({
+            message: "User not found",
+            errorCode: "NO_USER_FOUND",
+            statusCode: 404,
+        });
     }
 
     return {

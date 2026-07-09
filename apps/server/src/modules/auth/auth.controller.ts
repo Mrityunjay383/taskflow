@@ -32,9 +32,12 @@ export const register = async ({ body }: RequestContext) => {
 };
 
 export const login = async ({ body }: RequestContext) => {
-    const { email, password } = body;
+    const { identifier, password } = body;
 
-    const result = await AuthService.loginUser({ email, password });
+    const result = await AuthService.loginUser({
+        identifier,
+        password,
+    });
 
     const token = generateToken(result.id);
 
