@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useCheckUserName } from "@/features/auth/auth.queries";
 import { useDebounce } from "@/hooks/useDebounce";
+import { getApiError } from "@/helpers/general";
 
 const RegisterPanel = () => {
     const router = useRouter();
@@ -44,8 +45,10 @@ const RegisterPanel = () => {
             await registerMutation.mutateAsync(values);
 
             router.replace("/dashboard");
-        } catch (error: any) {
-            const { message, errorCode } = error?.response?.data;
+        } catch (error) {
+            const apiError = getApiError(error);
+
+            const { message, errorCode } = apiError;
 
             if (errorCode === "EMAIL_EXISTS") {
                 form.setError("email", {

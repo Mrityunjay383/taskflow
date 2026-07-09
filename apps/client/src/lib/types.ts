@@ -11,3 +11,9 @@ export type AuthContextValue = {
     isLoading: boolean;
     isAuthenticated: boolean;
 };
+
+export type ApiErrorResponse = {
+    success: false;
+    message: string;
+    errorCode: string;
+};

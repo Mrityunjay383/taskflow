@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { getApiError } from "@/helpers/general";
 
 export default function LoginPanel({}) {
     const router = useRouter();
@@ -28,8 +29,10 @@ export default function LoginPanel({}) {
             await loginMutation.mutateAsync(values);
 
             router.replace("/dashboard");
-        } catch (error: any) {
-            const { message, errorCode } = error?.response?.data;
+        } catch (error) {
+            const apiError = getApiError(error);
+
+            const { message, errorCode } = apiError;
 
             switch (errorCode) {
                 case "INVALID_CREDS":
