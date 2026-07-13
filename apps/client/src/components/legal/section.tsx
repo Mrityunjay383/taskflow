@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LegalSectionProps } from "@/components/partials/legal/types";
+import { LegalSectionProps } from "@/components/legal/types";
 
 export default function LegalSection({ id, title, children }: LegalSectionProps) {
     return (

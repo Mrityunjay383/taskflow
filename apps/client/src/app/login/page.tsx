@@ -1,5 +1,5 @@
-import LeftPanel from "@/components/partials/auth/LeftPanel";
-import LoginPanel from "@/components/partials/auth/LoginPanel";
+import LeftPanel from "@/components/auth/LeftPanel";
+import LoginPanel from "@/components/auth/LoginPanel";
 
 export default function LoginPage() {
     return (

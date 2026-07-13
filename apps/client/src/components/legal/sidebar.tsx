@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
-import { LegalSidebarProps } from "@/components/partials/legal/types";
+import { LegalSidebarProps } from "@/components/legal/types";
 
 export default function LegalSidebar({ title, items }: LegalSidebarProps) {
     return (

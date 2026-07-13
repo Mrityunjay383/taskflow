@@ -8,7 +8,7 @@ import { CheckSquare } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { LegalLayoutProps } from "@/components/partials/legal/types";
+import { LegalLayoutProps } from "@/components/legal/types";
 
 export default function LegalLayout({
     title,
@@ -31,7 +31,7 @@ export default function LegalLayout({
                 {/* Navbar */}
                 <header className="mb-14 flex items-center justify-between">
                     <Link
-                        href="/"
+                        href="/apps/client/public"
                         className="group flex items-center gap-3 transition-opacity hover:opacity-90"
                     >
                         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-500 shadow-lg shadow-indigo-500/25">
@@ -54,7 +54,7 @@ export default function LegalLayout({
                         variant="outline"
                         className="border-[#293548] bg-[#101827] text-white hover:bg-[#172033]"
                     >
-                        <Link href="/">Back to App</Link>
+                        <Link href="/apps/client/public">Back to App</Link>
                     </Button>
                 </header>
 

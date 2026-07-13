@@ -1,5 +1,5 @@
-import LeftPanel from "@/components/partials/auth/LeftPanel";
-import RegisterPanel from "@/components/partials/auth/RegisterPanel";
+import LeftPanel from "@/components/auth/LeftPanel";
+import RegisterPanel from "@/components/auth/RegisterPanel";
 
 export default function RegisterPage() {
     return (

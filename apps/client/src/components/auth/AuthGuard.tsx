@@ -4,7 +4,7 @@ import { ReactNode, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/providers/auth-provider";
-import AuthGuardLoader from "@/components/partials/auth/Loading";
+import AuthGuardLoader from "@/components/auth/Loading";
 
 export default function AuthGuard({ children }: { children: ReactNode }) {
     const router = useRouter();
