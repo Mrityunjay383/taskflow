@@ -110,12 +110,13 @@ export default function LoginPanel({}) {
                             >
                                 Password
                             </Label>
-                            <a
+                            <Link
                                 href="/forgot-password"
+                                tabIndex={-1}
                                 className="text-xs font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
                             >
                                 Forgot password?
-                            </a>
+                            </Link>
                         </div>
                         <Input
                             id="password"

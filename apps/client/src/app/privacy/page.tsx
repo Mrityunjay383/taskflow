@@ -1,9 +1,9 @@
-import LegalLayout from "@/components/partials/legal/layout";
-import LegalSidebar from "@/components/partials/legal/sidebar";
-import LegalSection from "@/components/partials/legal/section";
-import LegalFAQ from "@/components/partials/legal/faq";
+import LegalLayout from "@/components/legal/layout";
+import LegalSidebar from "@/components/legal/sidebar";
+import LegalSection from "@/components/legal/section";
+import LegalFAQ from "@/components/legal/faq";
 
-import { LegalList, LegalParagraph, LegalStrong } from "@/components/partials/legal/typography";
+import { LegalList, LegalParagraph, LegalStrong } from "@/components/legal/typography";
 
 const sections = [
     {

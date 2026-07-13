@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/accordion";
 
 import { Card } from "@/components/ui/card";
-import { LegalFAQProps } from "@/components/partials/legal/types";
+import { LegalFAQProps } from "@/components/legal/types";
 
 export default function LegalFAQ({ title = "Frequently Asked Questions", items }: LegalFAQProps) {
     return (
