@@ -1,6 +1,6 @@
 import WorkspaceSwitcher from "./WorkspaceSwitcher";
 import SidebarNav from "@/components/dashboard/sidebar/Nav";
-import SidebarUser from "@/components/dashboard/sidebar/user";
+import UserController from "@/components/dashboard/sidebar/UserController";
 
 export default function DashboardSidebar() {
     return (
@@ -15,7 +15,7 @@ export default function DashboardSidebar() {
 
             {/* Bottom */}
             <div className="border-t border-[#1E293B] p-4">
-                <SidebarUser />
+                <UserController />
             </div>
         </aside>
     );

@@ -11,7 +11,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
-export default function SidebarUser() {
+export default function UserController() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
