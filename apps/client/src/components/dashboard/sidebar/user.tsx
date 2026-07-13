@@ -1,7 +1,6 @@
 "use client";
 
 import { LogOut, Settings, User } from "lucide-react";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,7 +8,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
@@ -19,20 +17,17 @@ export default function SidebarUser() {
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="ghost"
-                    className="h-auto w-full justify-start rounded-xl p-2 hover:bg-[#111827]"
+                    className="group h-14 w-full justify-start border border-[#2A3A6A] bg-[#1E2A4A] px-3 transition-all duration-200 hover:bg-[#1E2A4A]/80 hover:border-[#3A4A7A]"
                 >
-                    <Avatar className="h-10 w-10">
-                        <AvatarFallback className="bg-indigo-500 text-white font-semibold">
+                    <Avatar className="h-8 w-8">
+                        <AvatarFallback className="rounded-lg bg-indigo-500 text-sm text-white font-bold">
                             MV
                         </AvatarFallback>
                     </Avatar>
 
                     <div className="ml-3 flex flex-col items-start overflow-hidden">
-                        <span className="truncate text-sm font-medium text-white">
-                            Mrityunjay Vyas
-                        </span>
-
-                        <span className="truncate text-xs text-slate-400">
+                        <span className="truncate text-sm font-semibold">Mrityunjay Vyas</span>
+                        <span className="truncate text-xs text-[#4A5580]">
                             mrityunjay@taskflow.com
                         </span>
                     </div>
@@ -42,23 +37,23 @@ export default function SidebarUser() {
             <DropdownMenuContent
                 side="top"
                 align="start"
-                className="w-60 border-[#1E293B] bg-[#111827]"
+                className="w-[260px] rounded-xl border border-[#2A3A6A] p-2 shadow-2xl"
             >
-                <DropdownMenuItem>
-                    <User className="mr-2 h-4 w-4" />
-                    Profile
+                <DropdownMenuItem className="cursor-pointer rounded-lg px-2 py-2.5">
+                    <User className="mr-3 h-4 w-4" />
+                    <span className="text-sm font-medium">Profile</span>
                 </DropdownMenuItem>
 
-                <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
-                    Preferences
+                <DropdownMenuItem className="cursor-pointer rounded-lg px-2 py-2.5">
+                    <Settings className="mr-3 h-4 w-4" />
+                    <span className="text-sm font-medium">Preferences</span>
                 </DropdownMenuItem>
 
-                <DropdownMenuSeparator />
+                <DropdownMenuSeparator className="my-2" />
 
-                <DropdownMenuItem className="text-red-400 focus:text-red-400">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Log out
+                <DropdownMenuItem className="cursor-pointer rounded-lg px-2 py-2.5 text-red-400 focus:text-red-400">
+                    <LogOut className="mr-3 h-4 w-4" />
+                    <span className="text-sm font-medium">Log out</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

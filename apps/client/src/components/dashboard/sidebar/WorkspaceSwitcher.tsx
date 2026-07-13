@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Plus } from "lucide-react";
+import { Check, ChevronDown, Plus } from "lucide-react";
 
 import {
     DropdownMenu,
@@ -12,42 +12,72 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+const workspaces = [
+    { id: "1", name: "TaskFlow", members: "3 members", active: true },
+    { id: "2", name: "Marketing", members: "12 members", active: false },
+    { id: "3", name: "Engineering", members: "27 members", active: false },
+];
+
 export default function WorkspaceSwitcher() {
+    const currentWorkspace = workspaces.find((w) => w.active)!;
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="ghost"
-                    className="flex h-auto w-full items-center justify-between rounded-xl p-3 hover:bg-[#111827]"
+                    className="group h-14 w-full justify-between border border-[#2A3A6A] bg-[#1E2A4A] px-3 transition-all duration-200 hover:bg-[#1E2A4A]/80 hover:border-[#3A4A7A]"
                 >
                     <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500 text-lg font-semibold text-white">
-                            T
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500 text-sm font-bold  shadow-lg shadow-indigo-500/20">
+                            {currentWorkspace.name[0]}
                         </div>
 
-                        <div className="flex flex-col items-start">
-                            <span className="text-sm font-semibold text-white">TaskFlow</span>
-
-                            <span className="text-xs text-slate-400">Free Workspace</span>
+                        <div className="flex flex-col items-start overflow-hidden">
+                            <span className="truncate text-sm font-semibold">
+                                {currentWorkspace.name}
+                            </span>
+                            <span className="truncate text-xs text-[#4A5580]">
+                                {currentWorkspace.members}
+                            </span>
                         </div>
                     </div>
 
-                    <ChevronDown className="h-4 w-4 text-slate-400" />
+                    <ChevronDown className="h-4 w-4 text-[#4A5580] transition-all duration-200 group-data-[state=open]:rotate-180 group-data-[state=open]:text-indigo-400" />
                 </Button>
             </DropdownMenuTrigger>
+            <DropdownMenuContent
+                align="start"
+                sideOffset={8}
+                className="w-[260px] rounded-xl border border-[#2A3A6A]  p-2 shadow-2xl"
+            >
+                {workspaces.map((workspace) => (
+                    <DropdownMenuItem
+                        key={workspace.id}
+                        className={`flex cursor-pointer items-center justify-between rounded-lg px-2 py-2.5 ${
+                            workspace.active ? "bg-indigo-500/10" : ""
+                        }`}
+                    >
+                        <div className="flex items-center gap-3">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500 text-sm font-bold">
+                                {workspace.name[0]}
+                            </div>
 
-            <DropdownMenuContent align="start" className="w-72 border-[#1E293B] bg-[#111827]">
-                <DropdownMenuItem>TaskFlow</DropdownMenuItem>
+                            <div className="flex flex-col">
+                                <span className="text-sm font-medium">{workspace.name}</span>
+                                <span className="text-xs text-[#4A5580]">{workspace.members}</span>
+                            </div>
+                        </div>
 
-                <DropdownMenuItem>Marketing</DropdownMenuItem>
+                        {workspace.active && <Check className="h-4 w-4 text-indigo-400" />}
+                    </DropdownMenuItem>
+                ))}
 
-                <DropdownMenuItem>Engineering</DropdownMenuItem>
+                <DropdownMenuSeparator className="my-2" />
 
-                <DropdownMenuSeparator />
-
-                <DropdownMenuItem>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create Workspace
+                <DropdownMenuItem className="cursor-pointer rounded-lg px-2 py-2 text-muted-foreground focus:bg-[#1E2A4A] ">
+                    <Plus className="mr-3 h-4 w-4" />
+                    <span className="text-sm font-medium">Create New Workspace</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
