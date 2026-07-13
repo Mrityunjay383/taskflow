@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { CheckSquare } from "lucide-react";
 
@@ -13,6 +16,8 @@ export default function LegalLayout({
     lastUpdated,
     children,
 }: LegalLayoutProps) {
+    const pathname = usePathname();
+
     return (
         <main className="relative min-h-screen bg-[#080B14]">
             {/* Ambient Background */}
@@ -88,13 +93,25 @@ export default function LegalLayout({
                     <div className="flex gap-3">
                         <Button
                             asChild
-                            variant="outline"
-                            className="border-[#293548] bg-[#101827] text-white hover:bg-[#172033]"
+                            variant={pathname === "/privacy" ? "default" : "outline"}
+                            className={
+                                pathname === "/privacy"
+                                    ? "bg-indigo-500 hover:bg-indigo-600"
+                                    : "border-[#293548] bg-[#101827] text-white hover:text-gray-200 hover:bg-[#172033]"
+                            }
                         >
                             <Link href="/privacy">Privacy Policy</Link>
                         </Button>
 
-                        <Button asChild className="bg-indigo-500 hover:bg-indigo-600">
+                        <Button
+                            asChild
+                            variant={pathname === "/terms" ? "default" : "outline"}
+                            className={
+                                pathname === "/terms"
+                                    ? "bg-indigo-500 hover:bg-indigo-600"
+                                    : "border-[#293548] bg-[#101827] text-white hover:text-gray-200 hover:bg-[#172033]"
+                            }
+                        >
                             <Link href="/terms">Terms of Service</Link>
                         </Button>
                     </div>
