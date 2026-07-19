@@ -19,7 +19,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
 
         const decoded = verifyToken(token);
 
-        // attach user to request
+        // attaching user to request
         (req as any).user = decoded;
 
         next();
