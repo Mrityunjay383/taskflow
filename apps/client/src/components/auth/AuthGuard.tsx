@@ -7,15 +7,7 @@ import { useAuth } from "@/providers/auth-provider";
 import AuthGuardLoader from "@/components/auth/Loading";
 
 export default function AuthGuard({ children }: { children: ReactNode }) {
-    const router = useRouter();
-
     const { isLoading, isAuthenticated } = useAuth();
-
-    useEffect(() => {
-        if (!isLoading && !isAuthenticated) {
-            router.replace("/login");
-        }
-    }, [isLoading, isAuthenticated, router]);
 
     if (isLoading) {
         return <AuthGuardLoader />;
