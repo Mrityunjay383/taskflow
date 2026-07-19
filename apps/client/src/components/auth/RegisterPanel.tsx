@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useCheckUserName } from "@/features/auth/auth.queries";
 import { useDebounce } from "@/hooks/useDebounce";
 import { getApiError } from "@/helpers/general";
+import { useEffect } from "react";
 
 const RegisterPanel = () => {
     const router = useRouter();
@@ -28,11 +29,37 @@ const RegisterPanel = () => {
 
     const debouncedUserName = useDebounce(watchedUserName, 500);
 
-    const { data: userNameResult, isLoading: isCheckingUserName } =
-        useCheckUserName(debouncedUserName);
+    const { available, isChecking, validationError } = useCheckUserName(debouncedUserName);
+
+    useEffect(() => {
+        if (watchedUserName.trim().length <= 3) {
+            form.clearErrors("userName");
+            return;
+        }
+
+        if (validationError) {
+            form.setError("userName", {
+                type: "server",
+                message: validationError,
+            });
+
+            return;
+        }
+
+        if (!isChecking) {
+            if (available) {
+                form.clearErrors("userName");
+            } else {
+                form.setError("userName", {
+                    type: "server",
+                    message: "Username is already taken",
+                });
+            }
+        }
+    }, [available, validationError, isChecking, watchedUserName, form]);
 
     const onSubmit = async (values: RegisterFormValues) => {
-        if (userNameResult && !userNameResult.available) {
+        if (!available) {
             form.setError("userName", {
                 type: "manual",
                 message: "Username is already taken",
@@ -119,24 +146,6 @@ const RegisterPanel = () => {
                         />
                         {nameError && (
                             <p className="text-xs text-red-400 font-medium">{nameError}</p>
-                        )}
-                        {!nameError && watchedUserName.length >= 3 && (
-                            <div className="flex items-center gap-2 text-xs">
-                                {isCheckingUserName ? (
-                                    <>
-                                        <Loader2 className="h-3 w-3 animate-spin text-gray-400" />
-                                        <span className="text-gray-400">
-                                            Checking availability...
-                                        </span>
-                                    </>
-                                ) : userNameResult?.available ? (
-                                    <span className="text-green-400">✓ Username is available</span>
-                                ) : (
-                                    <span className="text-red-400">
-                                        ✗ Username is already taken
-                                    </span>
-                                )}
-                            </div>
                         )}
                     </div>
 
