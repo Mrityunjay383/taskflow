@@ -119,7 +119,7 @@ export const getUserById = async ({ id }: GetUserByIdInput): GetUserByIdResult =
         throw new AppError({
             message: "User not found",
             errorCode: "NO_USER_FOUND",
-            statusCode: 404,
+            statusCode: 401,
         });
     }
 

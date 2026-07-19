@@ -1,7 +1,6 @@
 export type AuthContext = RequestContext & {
     user: {
         userId: string;
-        role: "USER" | "ADMIN";
     };
 };
 

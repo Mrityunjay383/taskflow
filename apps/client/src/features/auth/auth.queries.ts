@@ -32,8 +32,9 @@ export const useCheckUserName = (userName: string) => {
     const validationError = apiError?.issues?.find((e) => e.path === "userName")?.message ?? null;
 
     return {
-        available: query.data?.available ?? false,
+        available: query.data?.available ?? null,
         isChecking: query.isLoading,
         validationError,
+        isError: query.isError,
     };
 };

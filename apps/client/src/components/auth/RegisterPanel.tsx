@@ -29,7 +29,7 @@ const RegisterPanel = () => {
 
     const debouncedUserName = useDebounce(watchedUserName, 500);
 
-    const { available, isChecking, validationError } = useCheckUserName(debouncedUserName);
+    const { available, isChecking, validationError, isError } = useCheckUserName(debouncedUserName);
 
     useEffect(() => {
         if (watchedUserName.trim().length <= 3) {
@@ -47,19 +47,28 @@ const RegisterPanel = () => {
         }
 
         if (!isChecking) {
-            if (available) {
+            if (available === true) {
                 form.clearErrors("userName");
-            } else {
+            }
+
+            if (available === false) {
                 form.setError("userName", {
                     type: "server",
                     message: "Username is already taken",
                 });
             }
         }
-    }, [available, validationError, isChecking, watchedUserName, form]);
+
+        if (isError) {
+            form.setError("userName", {
+                type: "server",
+                message: "Something went wrong",
+            });
+        }
+    }, [available, validationError, isChecking, watchedUserName, form, isError]);
 
     const onSubmit = async (values: RegisterFormValues) => {
-        if (!available) {
+        if (available === false) {
             form.setError("userName", {
                 type: "manual",
                 message: "Username is already taken",

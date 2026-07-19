@@ -33,3 +33,7 @@ export const getCurrentUser = async (): Promise<User> => {
 
     return response.data.data!;
 };
+
+export const logout = async (): Promise<void> => {
+    await api.post<ApiResponse<null>>("/auth/logout");
+};
