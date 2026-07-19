@@ -196,7 +196,7 @@ const RegisterPanel = () => {
                     <Button
                         type="submit"
                         disabled={registerMutation.isPending}
-                        className="w-full h-11 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-lg shadow-[0_4px_20px_rgba(99,102,241,0.35)] hover:shadow-[0_6px_24px_rgba(99,102,241,0.5)] transition-all mt-1"
+                        className="w-full h-11 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-lg cursor-pointer shadow-[0_4px_20px_rgba(99,102,241,0.35)] hover:shadow-[0_6px_24px_rgba(99,102,241,0.5)] transition-all mt-1"
                     >
                         {registerMutation.isPending ? (
                             <>
