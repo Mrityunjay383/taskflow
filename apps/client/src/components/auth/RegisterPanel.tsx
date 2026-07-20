@@ -80,8 +80,6 @@ const RegisterPanel = () => {
         try {
             await registerMutation.mutateAsync(values);
 
-            console.log("res", res);
-
             router.replace("/onboarding");
         } catch (error) {
             const apiError = getApiError(error);

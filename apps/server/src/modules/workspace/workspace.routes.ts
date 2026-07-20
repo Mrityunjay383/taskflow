@@ -12,11 +12,6 @@ const router = Router();
 
 router.get("/", authMiddleware, workspaceController.getWorkspaces);
 
-router.get(
-    "/check-slug",
-    authMiddleware,
-    validate(checkSlugSchema, "query"),
-    workspaceController.getWorkspaces,
-);
+router.get("/check-slug", validate(checkSlugSchema, "query"), workspaceController.checkSlug);
 
 export default router;

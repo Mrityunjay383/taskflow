@@ -1,3 +1,6 @@
+import { checkUserNameSchema } from "./auth.validation";
+import { z } from "zod";
+
 export type AuthUser = {
     id: string;
     userName: string;
@@ -5,9 +8,7 @@ export type AuthUser = {
     onboardingRequired?: boolean;
 };
 
-export type IsUniqueUserInput = {
-    userName: string;
-};
+export type IsUniqueUserInput = z.infer<typeof checkUserNameSchema>;
 
 export type CreateUserInput = {
     email: string;
@@ -24,7 +25,5 @@ export type GetUser = {
     userId: string;
 };
 
-export type CreateUserResult = Promise<AuthUser>;
+export type AuthResult = Promise<AuthUser>;
 export type IsUniqueUserResult = Promise<{ available: boolean }>;
-export type LoginUserResult = Promise<AuthUser>;
-export type GetResult = Promise<AuthUser>;

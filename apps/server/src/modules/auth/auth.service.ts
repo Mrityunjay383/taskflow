@@ -1,13 +1,12 @@
 import { prisma } from "../../config/prisma";
 import { comparePassword, hashPassword } from "../../utils/password";
 import {
+    AuthResult,
     CreateUserInput,
-    CreateUserResult,
     GetUser,
     IsUniqueUserInput,
     IsUniqueUserResult,
     LoginUserInput,
-    LoginUserResult,
 } from "./auth.types";
 import { AppError } from "../../utils/AppError";
 import { z } from "zod";
@@ -28,11 +27,7 @@ export const isAvailable = async ({ userName }: IsUniqueUserInput): IsUniqueUser
     };
 };
 
-export const createUser = async ({
-    email,
-    password,
-    userName,
-}: CreateUserInput): CreateUserResult => {
+export const createUser = async ({ email, password, userName }: CreateUserInput): AuthResult => {
     const existing = await prisma.user.findFirst({
         where: {
             OR: [{ email }, { userName }],
@@ -67,7 +62,7 @@ export const createUser = async ({
     return toCurrentUser(user);
 };
 
-export const loginUser = async ({ identifier, password }: LoginUserInput): LoginUserResult => {
+export const loginUser = async ({ identifier, password }: LoginUserInput): AuthResult => {
     const isEmail = z.email().safeParse(identifier).success;
 
     const user = await prisma.user.findUnique({
@@ -86,7 +81,7 @@ export const loginUser = async ({ identifier, password }: LoginUserInput): Login
     return toCurrentUser(user);
 };
 
-export const getCurrentUser = async ({ userId }: GetUser) => {
+export const getCurrentUser = async ({ userId }: GetUser): AuthResult => {
     const user = await prisma.user.findUnique({
         where: { id: userId },
         select: currentUserSelect,

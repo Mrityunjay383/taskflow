@@ -1,1 +1,7 @@
-export type SlugStatus = "idle" | "checking" | "available" | "taken";
+export type CheckSlugPayload = {
+    slug: string;
+};
+
+export type CheckSlug = {
+    available: boolean;
+};
