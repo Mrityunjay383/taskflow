@@ -80,7 +80,9 @@ const RegisterPanel = () => {
         try {
             await registerMutation.mutateAsync(values);
 
-            router.replace("/dashboard");
+            console.log("res", res);
+
+            router.replace("/onboarding");
         } catch (error) {
             const apiError = getApiError(error);
 
@@ -213,7 +215,7 @@ const RegisterPanel = () => {
                                 Creating workspace…
                             </>
                         ) : (
-                            "Create workspace"
+                            "Get In"
                         )}
                     </Button>
 

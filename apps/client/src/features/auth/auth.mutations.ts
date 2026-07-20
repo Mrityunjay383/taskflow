@@ -1,27 +1,26 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { login, register } from "./auth.api";
+import { useAuth } from "@/providers/auth-provider";
 
 export const useLoginMutation = () => {
-    const queryClient = useQueryClient();
+    const { setUser } = useAuth();
 
     return useMutation({
         mutationFn: login,
-
         onSuccess: (user) => {
-            queryClient.setQueryData(["me"], user);
+            setUser(user);
         },
     });
 };
 
 export const useRegisterMutation = () => {
-    const queryClient = useQueryClient();
+    const { setUser } = useAuth();
 
     return useMutation({
         mutationFn: register,
-
         onSuccess: (user) => {
-            queryClient.setQueryData(["me"], user);
+            setUser(user);
         },
     });
 };

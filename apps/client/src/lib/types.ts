@@ -6,11 +6,14 @@ export type ApiResponse<T> = {
     message?: string;
 };
 
-export type AuthContextValue = {
+export interface AuthContextValue {
     user: User | null;
     isLoading: boolean;
     isAuthenticated: boolean;
-};
+
+    setUser: (user: User) => void;
+    clearUser: () => void;
+}
 
 export type ApiErrorResponse = {
     success: false;
