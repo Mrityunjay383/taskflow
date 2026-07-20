@@ -2,7 +2,7 @@
 
 import AuthGuard from "@/components/auth/AuthGuard";
 import { z } from "zod";
-import { ArrowRight, CheckCircle2, CheckSquare, Loader2, XCircle } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -10,81 +10,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-const onboardingSchema = z.object({
-    name: z.string().min(2, "Workspace name must be at least 2 characters").max(48),
-    slug: z
-        .string()
-        .min(2, "Slug must be at least 2 characters")
-        .max(48)
-        .regex(/^[a-z0-9-]+$/, "Only lowercase letters, numbers, and hyphens"),
-});
+import { onboardingSchema } from "@/features/workspace/workspace.schema";
+import Wordmark from "@/components/onboarding/Wordmark";
+import { SlugStatus } from "@/features/workspace/workspace.types";
+import SlugStatusBadge from "@/components/onboarding/SlugStatusBadge";
+import { toSlug } from "@/helpers/workspace";
 
 type OnboardingValues = z.infer<typeof onboardingSchema>;
-
-function toSlug(value: string): string {
-    return value
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-");
-}
-
-function Wordmark() {
-    return (
-        <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500">
-                <CheckSquare className="h-4 w-4 text-white" strokeWidth={2.5} />
-            </div>
-            <span className="text-base font-bold tracking-tight text-white">Taskflow</span>
-        </div>
-    );
-}
-
-type SlugStatus = "idle" | "checking" | "available" | "taken";
-
-function SlugStatusBadge({ status }: { status: SlugStatus }) {
-    if (status === "idle") return null;
-
-    return (
-        <div
-            className="flex items-center gap-1.5 transition-all duration-300"
-            style={{ animation: "fadeSlideIn 0.2s ease both" }}
-        >
-            {status === "checking" && (
-                <>
-                    <Loader2 className="h-3 w-3 animate-spin text-slate-400" />
-                    <span className="text-xs text-slate-400">Checking availability…</span>
-                </>
-            )}
-            {status === "available" && (
-                <>
-                    <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-                    <span className="text-xs text-emerald-400">Available</span>
-                </>
-            )}
-            {status === "taken" && (
-                <>
-                    <XCircle className="h-3 w-3 text-red-400" />
-                    <span className="text-xs text-red-400">Already taken</span>
-                </>
-            )}
-        </div>
-    );
-}
 
 const Onboarding = () => {
     const router = useRouter();
     const [slugStatus, setSlugStatus] = useState<SlugStatus>("idle");
     const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        // Trigger mount animation
-        const t = setTimeout(() => setMounted(true), 50);
-        return () => clearTimeout(t);
-    }, []);
 
     const form = useForm<OnboardingValues>({
         resolver: zodResolver(onboardingSchema),
@@ -95,7 +32,6 @@ const Onboarding = () => {
     const watchedName = form.watch("name");
     const watchedSlug = form.watch("slug");
 
-    // Auto-derive slug from name unless manually edited
     useEffect(() => {
         if (!slugManuallyEdited) {
             const derived = toSlug(watchedName);
@@ -137,25 +73,6 @@ const Onboarding = () => {
 
     return (
         <AuthGuard>
-            <style>{`
-                @keyframes fadeSlideIn {
-                    from { opacity: 0; transform: translateY(6px); }
-                    to   { opacity: 1; transform: translateY(0); }
-                }
-                .page-enter {
-                    opacity: 0;
-                    transform: translateY(16px);
-                    transition: opacity 0.45s ease, transform 0.45s ease;
-                }
-                .page-enter-active {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-                .error-msg {
-                    animation: fadeSlideIn 0.2s ease both;
-                }
-            `}</style>
-
             {/* Page shell */}
             <div className="relative flex min-h-screen flex-col items-center justify-center bg-[#080B14] px-4 py-16 overflow-hidden">
                 {/* Atmospheric glow — the signature element */}
@@ -173,21 +90,12 @@ const Onboarding = () => {
                 </div>
 
                 {/* Wordmark */}
-                <div
-                    className="mb-10"
-                    style={{
-                        animation: mounted ? "fadeSlideIn 0.4s ease both" : "none",
-                        animationDelay: "0ms",
-                    }}
-                >
+                <div className="mb-10">
                     <Wordmark />
                 </div>
 
                 {/* Card */}
-                <div
-                    className={`page-enter relative w-full max-w-[480px] ${mounted ? "page-enter-active" : ""}`}
-                    style={{ transitionDelay: "60ms" }}
-                >
+                <div className="relative w-full max-w-[480px]">
                     <div className="rounded-2xl border border-[#1E293B] bg-[#0F172A] p-8 shadow-[0_0_0_1px_rgba(99,102,241,0.04),0_32px_64px_rgba(0,0,0,0.4)]">
                         {/* Header */}
                         <div className="mb-8">
@@ -226,9 +134,7 @@ const Onboarding = () => {
                                         }`}
                                     {...form.register("name")}
                                 />
-                                {nameError && (
-                                    <p className="error-msg text-xs text-red-400">{nameError}</p>
-                                )}
+                                {nameError && <p className="text-xs text-red-400">{nameError}</p>}
                             </div>
 
                             {/* Workspace Slug */}
@@ -260,9 +166,7 @@ const Onboarding = () => {
                                         })}
                                     />
                                 </div>
-                                {slugError && (
-                                    <p className="error-msg text-xs text-red-400">{slugError}</p>
-                                )}
+                                {slugError && <p className="text-xs text-red-400">{slugError}</p>}
                             </div>
 
                             {/* Submit */}
