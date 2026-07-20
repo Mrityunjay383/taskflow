@@ -13,3 +13,16 @@ export const checkSlug = async ({ query }: AuthContext) => {
         data: existed,
     };
 };
+
+export const createWorkspace = async ({ body, user }: AuthContext) => {
+    const workspace = await WorkspaceService.createWorkspace({
+        ownerId: user.userId,
+        name: body.name,
+        slug: body.slug,
+    });
+
+    return {
+        success: true,
+        data: workspace,
+    };
+};
