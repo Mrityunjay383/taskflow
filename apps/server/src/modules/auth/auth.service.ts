@@ -3,8 +3,7 @@ import { comparePassword, hashPassword } from "../../utils/password";
 import {
     CreateUserInput,
     CreateUserResult,
-    GetUserByIdInput,
-    GetUserByIdResult,
+    GetUser,
     IsUniqueUserInput,
     IsUniqueUserResult,
     LoginUserInput,
@@ -12,6 +11,7 @@ import {
 } from "./auth.types";
 import { AppError } from "../../utils/AppError";
 import { z } from "zod";
+import { currentUserSelect, toCurrentUser } from "./auth.utils";
 
 export const isAvailable = async ({ userName }: IsUniqueUserInput): IsUniqueUserResult => {
     const existing = await prisma.user.findUnique({
@@ -39,92 +39,66 @@ export const createUser = async ({
         },
     });
 
-    if (existing) {
-        if (existing.email === email) {
-            throw new AppError({
-                message: "Email already exist",
-                errorCode: "EMAIL_EXISTS",
-                statusCode: 400,
-            });
-        }
-
-        if (existing.userName === userName) {
-            throw new AppError({
-                message: "Username already exists",
-                errorCode: "USERNAME_EXISTS",
-                statusCode: 400,
-            });
-        }
+    if (existing?.email === email) {
+        throw new AppError({
+            message: "Email already exists",
+            errorCode: "EMAIL_EXISTS",
+            statusCode: 400,
+        });
     }
 
-    const hashed = await hashPassword(password);
+    if (existing?.userName === userName) {
+        throw new AppError({
+            message: "Username already exists",
+            errorCode: "USERNAME_EXISTS",
+            statusCode: 400,
+        });
+    }
 
     const user = await prisma.user.create({
         data: {
             email,
-            password: hashed,
+            password: await hashPassword(password),
             userName,
         },
-        select: {
-            id: true,
-            userName: true,
-        },
+        select: currentUserSelect,
     });
 
-    return {
-        id: user.id,
-        userName: user.userName,
-    };
+    return toCurrentUser(user);
 };
 
 export const loginUser = async ({ identifier, password }: LoginUserInput): LoginUserResult => {
     const isEmail = z.email().safeParse(identifier).success;
 
-    const user = isEmail
-        ? await prisma.user.findUnique({
-              where: { email: identifier },
-          })
-        : await prisma.user.findUnique({
-              where: { userName: identifier },
-          });
+    const user = await prisma.user.findUnique({
+        where: isEmail ? { email: identifier } : { userName: identifier },
+        select: currentUserSelect,
+    });
+
+    if (!user || !(await comparePassword(password, user.password))) {
+        throw new AppError({
+            message: "Invalid email/username or password",
+            errorCode: "INVALID_CREDS",
+            statusCode: 400,
+        });
+    }
+
+    return toCurrentUser(user);
+};
+
+export const getCurrentUser = async ({ userId }: GetUser) => {
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: currentUserSelect,
+    });
 
     if (!user) {
         throw new AppError({
-            message: "Invalid email/username or password",
-            errorCode: "INVALID_CREDS",
-            statusCode: 400,
-        });
-    }
-
-    const isValid = await comparePassword(password, user.password);
-
-    if (!isValid) {
-        throw new AppError({
-            message: "Invalid email/username or password",
-            errorCode: "INVALID_CREDS",
-            statusCode: 400,
-        });
-    }
-
-    return {
-        id: user.id,
-        userName: user.userName,
-    };
-};
-
-export const getUserById = async ({ id }: GetUserByIdInput): GetUserByIdResult => {
-    const existing = await prisma.user.findUnique({ where: { id } });
-
-    if (!existing) {
-        throw new AppError({
-            message: "User not found",
-            errorCode: "NO_USER_FOUND",
             statusCode: 401,
+            message: "User not found.",
+            errorCode: "USER_NOT_FOUND",
         });
     }
 
-    return {
-        id: existing.id,
-        userName: existing.userName,
-    };
+    return toCurrentUser(user);
 };
