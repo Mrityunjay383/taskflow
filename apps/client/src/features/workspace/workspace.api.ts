@@ -5,12 +5,19 @@ import {
     CheckSlugPayload,
     CreateWorkspace,
     CreateWorkspacePayload,
+    Workspace,
 } from "@/features/workspace/workspace.types";
 
 export const checkSlug = async (payload: CheckSlugPayload): Promise<CheckSlug> => {
     const response = await api.get<ApiResponse<CheckSlug>>("/workspace/check-slug", {
         params: payload,
     });
+
+    return response.data.data!;
+};
+
+export const getWorkspaces = async (): Promise<Workspace[]> => {
+    const response = await api.get<ApiResponse<Workspace[]>>("/workspace");
 
     return response.data.data!;
 };

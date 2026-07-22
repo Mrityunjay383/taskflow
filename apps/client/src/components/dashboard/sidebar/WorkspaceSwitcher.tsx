@@ -11,15 +11,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
-
-const workspaces = [
-    { id: "1", name: "TaskFlow", members: "3 members", active: true },
-    { id: "2", name: "Marketing", members: "12 members", active: false },
-    { id: "3", name: "Engineering", members: "27 members", active: false },
-];
+import { useCurrentWorkspace } from "@/hooks/useCurrentWorkspace";
+import { WorkspaceSwitcherSkeleton } from "@/components/skeletons/WorkspaceSwitcher";
 
 export default function WorkspaceSwitcher() {
-    const currentWorkspace = workspaces.find((w) => w.active)!;
+    const { workspaces, currentWorkspace, setCurrentWorkspace, isLoading } = useCurrentWorkspace();
+
+    if (isLoading) {
+        return <WorkspaceSwitcherSkeleton />;
+    }
+
+    if (!currentWorkspace) {
+        return null;
+    }
 
     return (
         <div className="border-b border-[#1E293B] p-4">
@@ -31,7 +35,7 @@ export default function WorkspaceSwitcher() {
                     >
                         <div className="flex items-center gap-3">
                             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500 text-sm font-bold  shadow-lg shadow-indigo-500/20">
-                                {currentWorkspace.name[0]}
+                                {currentWorkspace.name[0].toUpperCase()}
                             </div>
 
                             <div className="flex flex-col items-start overflow-hidden">
@@ -39,7 +43,7 @@ export default function WorkspaceSwitcher() {
                                     {currentWorkspace.name}
                                 </span>
                                 <span className="truncate text-xs text-[#4A5580]">
-                                    {currentWorkspace.members}
+                                    {currentWorkspace.role}
                                 </span>
                             </div>
                         </div>
@@ -55,24 +59,23 @@ export default function WorkspaceSwitcher() {
                     {workspaces.map((workspace) => (
                         <DropdownMenuItem
                             key={workspace.id}
-                            className={`flex cursor-pointer items-center justify-between rounded-lg px-2 py-2.5 ${
-                                workspace.active ? "bg-indigo-500/10" : ""
-                            }`}
+                            className={`flex cursor-pointer items-center justify-between rounded-lg px-2 py-2.5 bg-indigo-500/10`}
+                            onClick={() => setCurrentWorkspace(workspace.id)}
                         >
                             <div className="flex items-center gap-3">
                                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500 text-sm font-bold">
-                                    {workspace.name[0]}
+                                    {workspace.name[0].toUpperCase()}
                                 </div>
 
                                 <div className="flex flex-col">
                                     <span className="text-sm font-medium">{workspace.name}</span>
-                                    <span className="text-xs text-[#4A5580]">
-                                        {workspace.members}
-                                    </span>
+                                    <span className="text-xs text-[#4A5580]">{workspace.role}</span>
                                 </div>
                             </div>
 
-                            {workspace.active && <Check className="h-4 w-4 text-indigo-400" />}
+                            {workspace.id === currentWorkspace.id && (
+                                <Check className="h-4 w-4 text-indigo-400" />
+                            )}
                         </DropdownMenuItem>
                     ))}
 
