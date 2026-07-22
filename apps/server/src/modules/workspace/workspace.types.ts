@@ -26,8 +26,8 @@ export type CreateWorkspaceInput = {
     slug: string;
 };
 
-export interface CreateWorkspaceResult {
+export type CreateWorkspaceResult = {
     id: string;
     name: string;
     slug: string;
-}
+};

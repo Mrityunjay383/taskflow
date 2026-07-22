@@ -38,7 +38,7 @@ export default function UserController() {
                     </Avatar>
 
                     {!collapsed && (
-                        <div className="ml-3 w-full overflow-hidden">
+                        <div className="ml-1 w-full overflow-hidden">
                             <span className="block truncate text-left text-sm font-semibold">
                                 {user?.userName}
                             </span>

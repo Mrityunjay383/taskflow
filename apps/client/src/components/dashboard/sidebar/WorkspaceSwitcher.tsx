@@ -1,5 +1,6 @@
-import { Check, ChevronDown, Plus } from "lucide-react";
+"use client";
 
+import { Check, ChevronDown, Plus } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -7,10 +8,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { Button } from "@/components/ui/button";
 import { WorkspaceSwitcherSkeleton } from "@/components/skeletons/WorkspaceSwitcher";
-
 import { useCurrentWorkspace } from "@/hooks/useCurrentWorkspace";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/hooks/useSidebar";
@@ -77,7 +76,7 @@ export default function WorkspaceSwitcher() {
                 <DropdownMenuContent
                     align="start"
                     sideOffset={8}
-                    className="w-[260px] rounded-xl border border-[#2A3A6A] p-2 shadow-2xl"
+                    className="w-[246px] rounded-xl border border-[#2A3A6A] p-2 shadow-2xl"
                 >
                     {workspaces.map((workspace) => {
                         const isCurrent = workspace.id === currentWorkspace.id;
