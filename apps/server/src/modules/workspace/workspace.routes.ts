@@ -10,6 +10,8 @@ const workspaceController = controllerWrapper(controller);
 
 const router = Router();
 
+router.get("/check-slug", validate(checkSlugSchema, "query"), workspaceController.checkSlug);
+
 router.get("/", authMiddleware, workspaceController.getWorkspaces);
 
 router.post(
@@ -18,7 +20,5 @@ router.post(
     validate(createWorkspaceSchema),
     workspaceController.createWorkspace,
 );
-
-router.get("/check-slug", validate(checkSlugSchema, "query"), workspaceController.checkSlug);
 
 export default router;
