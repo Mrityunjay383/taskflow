@@ -3,42 +3,52 @@
 import { useEffect, useMemo } from "react";
 
 import { useWorkspaces } from "@/features/workspace/workspace.queries";
-
-const STORAGE_KEY = "current-workspace-id";
+import { usePreferencesStore } from "@/stores/ui-preferences.store";
 
 export function useCurrentWorkspace() {
-    const query = useWorkspaces();
+    const { data: workspaces = [], isPending, isError, refetch } = useWorkspaces();
 
-    const workspaces = query.data ?? [];
+    const currentWorkspaceId = usePreferencesStore((state) => state.currentWorkspaceId);
+
+    const setCurrentWorkspace = usePreferencesStore((state) => state.setCurrentWorkspace);
 
     const currentWorkspace = useMemo(() => {
         if (!workspaces.length) {
             return null;
         }
 
-        const storedId = localStorage.getItem(STORAGE_KEY);
+        if (!currentWorkspaceId) {
+            return workspaces[0];
+        }
 
-        const storedWorkspace = workspaces.find((workspace) => workspace.id === storedId);
-
-        return storedWorkspace ?? workspaces[0];
-    }, [workspaces]);
+        return workspaces.find((workspace) => workspace.id === currentWorkspaceId) ?? workspaces[0];
+    }, [workspaces, currentWorkspaceId]);
 
     useEffect(() => {
-        if (!currentWorkspace) {
+        if (currentWorkspace && currentWorkspace.id !== currentWorkspaceId) {
+            setCurrentWorkspace(currentWorkspace.id);
+        }
+    }, [currentWorkspace, currentWorkspaceId, setCurrentWorkspace]);
+
+    const switchWorkspace = (workspaceId: string) => {
+        if (workspaceId === currentWorkspaceId) {
             return;
         }
 
-        localStorage.setItem(STORAGE_KEY, currentWorkspace.id);
-    }, [currentWorkspace]);
+        setCurrentWorkspace(workspaceId);
 
-    const setCurrentWorkspace = (workspaceId: string) => {
-        localStorage.setItem(STORAGE_KEY, workspaceId);
+        // Future:
+        // queryClient.invalidateQueries(...)
+        // router.refresh()
     };
 
     return {
-        ...query,
         workspaces,
         currentWorkspace,
-        setCurrentWorkspace,
+        switchWorkspace,
+
+        isLoading: isPending,
+        isError,
+        refetch,
     };
 }
