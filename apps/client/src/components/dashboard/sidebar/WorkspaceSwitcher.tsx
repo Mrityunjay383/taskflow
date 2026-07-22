@@ -1,5 +1,3 @@
-"use client";
-
 import { Check, ChevronDown, Plus } from "lucide-react";
 
 import {
@@ -15,14 +13,15 @@ import { WorkspaceSwitcherSkeleton } from "@/components/skeletons/WorkspaceSwitc
 
 import { useCurrentWorkspace } from "@/hooks/useCurrentWorkspace";
 import { cn } from "@/lib/utils";
+import { useSidebar } from "@/hooks/useSidebar";
 
 export default function WorkspaceSwitcher() {
+    const { collapsed } = useSidebar();
+
     const { workspaces, currentWorkspace, switchWorkspace, isLoading, isError, refetch } =
         useCurrentWorkspace();
 
-    if (isLoading) {
-        return <WorkspaceSwitcherSkeleton />;
-    }
+    if (isLoading) return <WorkspaceSwitcherSkeleton />;
 
     if (isError) {
         return (
@@ -34,35 +33,44 @@ export default function WorkspaceSwitcher() {
         );
     }
 
-    if (!currentWorkspace) {
-        return null;
-    }
+    if (!currentWorkspace) return null;
 
     return (
-        <div className="border-b border-[#1E293B] p-4">
+        <div className="border-b border-[#1E293B] p-2">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button
                         variant="ghost"
-                        className="group h-14 w-full justify-between border border-[#2A3A6A] bg-[#1E2A4A] px-3 hover:bg-[#1E2A4A]/80 hover:border-[#3A4A7A]"
+                        className={cn(
+                            "group h-14 border border-[#2A3A6A] bg-[#1E2A4A] transition-all duration-200 hover:bg-[#1E2A4A]/80 hover:border-[#3A4A7A] data-[state=open]:border-indigo-500/50",
+                            collapsed
+                                ? "w-full justify-center px-0"
+                                : "w-full justify-between px-3",
+                        )}
                     >
-                        <div className="flex items-center gap-3 overflow-hidden">
+                        <div className="flex items-center overflow-hidden">
                             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500 text-sm font-bold shadow-lg shadow-indigo-500/20">
                                 {currentWorkspace.name[0].toUpperCase()}
                             </div>
 
-                            <div className="min-w-0 flex flex-col items-start">
-                                <span className="truncate text-sm font-semibold">
+                            <div
+                                className={cn(
+                                    "overflow-hidden transition-all duration-200",
+                                    collapsed ? "ml-0 w-0 opacity-0" : "ml-3 w-full opacity-100",
+                                )}
+                            >
+                                <p className="truncate text-left text-sm font-semibold">
                                     {currentWorkspace.name}
-                                </span>
-
-                                <span className="truncate text-xs capitalize text-[#4A5580]">
+                                </p>
+                                <p className="truncate text-left text-xs capitalize text-[#4A5580]">
                                     {currentWorkspace.role.toLowerCase()}
-                                </span>
+                                </p>
                             </div>
                         </div>
 
-                        <ChevronDown className="h-4 w-4 shrink-0 text-[#4A5580] group-data-[state=open]:rotate-180 group-data-[state=open]:text-indigo-400" />
+                        {!collapsed && (
+                            <ChevronDown className="h-4 w-4 shrink-0 text-[#4A5580] transition-transform duration-200 group-data-[state=open]:rotate-180 group-data-[state=open]:text-indigo-400" />
+                        )}
                     </Button>
                 </DropdownMenuTrigger>
 
@@ -87,12 +95,10 @@ export default function WorkspaceSwitcher() {
                                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500 text-sm font-bold">
                                         {workspace.name[0].toUpperCase()}
                                     </div>
-
                                     <div className="flex flex-col">
                                         <span className="text-sm font-medium">
                                             {workspace.name}
                                         </span>
-
                                         <span className="text-xs capitalize text-[#4A5580]">
                                             {workspace.role.toLowerCase()}
                                         </span>
@@ -106,9 +112,8 @@ export default function WorkspaceSwitcher() {
 
                     <DropdownMenuSeparator className="my-2" />
 
-                    <DropdownMenuItem className="cursor-pointer rounded-lg px-2 py-2 text-muted-foreground focus:bg-[#1E2A4A]">
+                    <DropdownMenuItem className="cursor-pointer rounded-lg px-2 py-2.5 text-muted-foreground focus:bg-[#1E2A4A]">
                         <Plus className="mr-3 h-4 w-4" />
-
                         <span className="text-sm font-medium">Create New Workspace</span>
                     </DropdownMenuItem>
                 </DropdownMenuContent>

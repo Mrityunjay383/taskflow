@@ -3,6 +3,8 @@
 import { LayoutDashboard, CheckSquare2 } from "lucide-react";
 
 import SidebarNavItem from "./NavItem";
+import { useSidebar } from "@/hooks/useSidebar";
+import { cn } from "@/lib/utils";
 
 const navigation = [
     {
@@ -18,13 +20,13 @@ const navigation = [
 ];
 
 export default function SidebarNav() {
+    const { collapsed } = useSidebar();
+
     return (
-        <div className="flex h-full flex-col">
-            <div className="space-y-1 p-3">
-                {navigation.map((item) => (
-                    <SidebarNavItem key={item.href} {...item} />
-                ))}
-            </div>
+        <div className={cn("space-y-1", collapsed ? "p-2" : "p-3")}>
+            {navigation.map((item) => (
+                <SidebarNavItem key={item.href} {...item} collapsed={collapsed} />
+            ))}
         </div>
     );
 }
