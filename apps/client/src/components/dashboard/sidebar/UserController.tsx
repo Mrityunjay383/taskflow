@@ -10,9 +10,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/hooks/useSidebar";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/providers/auth-provider";
 
 export default function UserController() {
     const { collapsed } = useSidebar();
+    const { user } = useAuth();
 
     return (
         <DropdownMenu>
@@ -26,17 +28,17 @@ export default function UserController() {
                 >
                     <Avatar className="h-8 w-8 shrink-0">
                         <AvatarFallback className="rounded-lg bg-indigo-500 text-sm text-white font-bold">
-                            MV
+                            {user?.userName.slice(0, 2).toUpperCase()}
                         </AvatarFallback>
                     </Avatar>
 
                     {!collapsed && (
                         <div className="ml-3 w-full overflow-hidden">
                             <span className="block truncate text-left text-sm font-semibold">
-                                Mrityunjay Vyas
+                                {user?.userName}
                             </span>
                             <span className="block truncate text-left text-xs text-[#4A5580]">
-                                mrityunjay@taskflow.com
+                                {user?.email}
                             </span>
                         </div>
                     )}
