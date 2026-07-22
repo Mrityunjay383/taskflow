@@ -11,10 +11,15 @@ import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/hooks/useSidebar";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
+import { UserControllerSkeleton } from "@/components/skeletons/UserController";
 
 export default function UserController() {
     const { collapsed } = useSidebar();
-    const { user } = useAuth();
+    const { user, isLoading } = useAuth();
+
+    if (isLoading) {
+        return <UserControllerSkeleton />;
+    }
 
     return (
         <DropdownMenu>
