@@ -14,11 +14,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { onboardingSchema } from "@/features/workspace/workspace.schema";
 import { useCreateWorkspaceMutation } from "@/features/workspace/workspace.mutations";
+import { getApiError } from "@/helpers/general";
+import { toast } from "sonner";
 
 type OnboardingValues = z.infer<typeof onboardingSchema>;
 
 const CreateWorkspace = () => {
-    const router = useRouter();
     const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
 
     const createMutation = useCreateWorkspaceMutation();
@@ -89,7 +90,19 @@ const CreateWorkspace = () => {
             return;
         }
 
-        const res = await createMutation.mutateAsync(values);
+        const toastId = toast.loading("Creating workspace...");
+
+        try {
+            await createMutation.mutateAsync(values);
+
+            toast.success("Workspace created!", {
+                id: toastId,
+            });
+        } catch (error) {
+            toast.error(getApiError(error).message, {
+                id: toastId,
+            });
+        }
     };
 
     const nameError = form.formState.errors.name?.message;
