@@ -13,12 +13,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { onboardingSchema } from "@/features/workspace/workspace.schema";
+import { useCreateWorkspaceMutation } from "@/features/workspace/workspace.mutations";
 
 type OnboardingValues = z.infer<typeof onboardingSchema>;
 
 const CreateWorkspace = () => {
     const router = useRouter();
     const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
+
+    const createMutation = useCreateWorkspaceMutation();
 
     const form = useForm<OnboardingValues>({
         resolver: zodResolver(onboardingSchema),
@@ -86,10 +89,7 @@ const CreateWorkspace = () => {
             return;
         }
 
-        // TODO: wire to mutation
-        console.log("Creating workspace:", values);
-        await new Promise((r) => setTimeout(r, 1200));
-        router.push("/dashboard");
+        const res = await createMutation.mutateAsync(values);
     };
 
     const nameError = form.formState.errors.name?.message;
