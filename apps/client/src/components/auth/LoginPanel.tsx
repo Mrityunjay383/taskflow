@@ -26,9 +26,13 @@ export default function LoginPanel({}) {
 
     const onSubmit = async (values: LoginFormValues) => {
         try {
-            await loginMutation.mutateAsync(values);
+            const res = await loginMutation.mutateAsync(values);
 
-            router.replace("/dashboard");
+            if (res?.onboardingRequired) {
+                router.replace("/onboarding");
+            } else {
+                router.replace("/dashboard");
+            }
         } catch (error) {
             const apiError = getApiError(error);
 

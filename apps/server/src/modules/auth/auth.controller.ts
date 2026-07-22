@@ -1,6 +1,7 @@
 import * as AuthService from "./auth.service";
 import { generateToken } from "../../utils/jwt";
 import { AuthContext, RequestContext } from "../../types";
+import { getCurrentUser } from "./auth.service";
 
 export const checkUserName = async ({ query }: RequestContext) => {
     const { userName } = query;
@@ -61,8 +62,8 @@ export const logout = async () => {
 };
 
 export const me = async ({ user }: AuthContext) => {
-    const existed = await AuthService.getUserById({
-        id: user.userId,
+    const existed = await AuthService.getCurrentUser({
+        userId: user.userId,
     });
 
     return {
