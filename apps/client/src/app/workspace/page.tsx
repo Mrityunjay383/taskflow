@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import OverviewStats from "@/components/dashboard/overview/stats";
 
 export default function DashboardPage() {
     return (
@@ -11,11 +12,7 @@ export default function DashboardPage() {
                 </p>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-                {[1, 2, 3, 4].map((item) => (
-                    <Card key={item} className="h-36 border-[#1E293B] bg-[#111827]" />
-                ))}
-            </div>
+            <OverviewStats members={18} projects={0} tasks={342} dueToday={0} />
 
             <Card className="h-[500px] border-[#1E293B] bg-[#111827]" />
         </div>

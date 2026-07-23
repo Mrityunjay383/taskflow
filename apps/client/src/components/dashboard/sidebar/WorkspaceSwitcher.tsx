@@ -114,7 +114,7 @@ export default function WorkspaceSwitcher() {
 
                     <DropdownMenuItem asChild>
                         <Link
-                            href="/dashboard/create-workspace"
+                            href="/workspace/create-workspace"
                             className="cursor-pointer rounded-lg px-2 py-2.5 text-muted-foreground"
                         >
                             <Plus className="mr-3 h-4 w-4" />

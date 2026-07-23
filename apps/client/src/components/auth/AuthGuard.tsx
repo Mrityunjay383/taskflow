@@ -20,7 +20,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
             if (user?.onboardingRequired) {
                 router.replace("/onboarding");
             } else {
-                router.replace("/dashboard");
+                router.replace("/workspace");
             }
         }
     }, [isLoading, isAuthenticated, router, user?.onboardingRequired]);

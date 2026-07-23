@@ -26,7 +26,7 @@ export const useCreateWorkspaceMutation = () => {
 
             switchWorkspace(data.id);
 
-            router.replace("/dashboard");
+            router.replace("/workspace");
         },
     });
 };

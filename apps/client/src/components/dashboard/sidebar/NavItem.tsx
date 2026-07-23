@@ -14,7 +14,7 @@ export default function SidebarNavItem({
 }: SidebarNavItemProps) {
     const pathname = usePathname();
 
-    const active = pathname === href || (href !== "/dashboard" && pathname.startsWith(href));
+    const active = pathname === href || (href !== "/workspace" && pathname.startsWith(href));
 
     return (
         <Link

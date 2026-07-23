@@ -9,12 +9,12 @@ import { cn } from "@/lib/utils";
 const navigation = [
     {
         title: "Overview",
-        href: "/dashboard",
+        href: "/workspace",
         icon: LayoutDashboard,
     },
     {
         title: "Tasks",
-        href: "/dashboard/tasks",
+        href: "/workspace/tasks",
         icon: CheckSquare2,
     },
 ];

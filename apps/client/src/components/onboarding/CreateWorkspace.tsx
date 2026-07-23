@@ -7,7 +7,6 @@ import { z } from "zod";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -149,9 +148,6 @@ const CreateWorkspace = () => {
                     className="flex items-center rounded-xl border border-[#1E293B] bg-[#0B1120] transition-all duration-150 focus-within:ring-2 focus-within:ring-indigo-500/30 focus-within:border-indigo-500/60 hover:border-[#2D3F55]"
                     style={slugError ? { borderColor: "rgba(239,68,68,0.5)" } : {}}
                 >
-                    <span className="select-none border-r border-[#1E293B] px-3 py-2.5 text-sm text-slate-600">
-                        taskflow.app/
-                    </span>
                     <input
                         id="slug"
                         placeholder="my-workspace"
@@ -161,6 +157,9 @@ const CreateWorkspace = () => {
                             onChange: () => setSlugManuallyEdited(true),
                         })}
                     />
+                    <span className="select-none border-l border-[#1E293B] px-3 py-2.5 text-sm text-slate-600">
+                        .taskflow.app
+                    </span>
                 </div>
                 {slugError && <p className="text-xs text-red-400">{slugError}</p>}
             </div>
