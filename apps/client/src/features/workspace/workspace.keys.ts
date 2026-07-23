@@ -8,4 +8,7 @@ export const workspaceKeys = {
     members: (workspaceId: string) => [...workspaceKeys.all, workspaceId, "members"] as const,
 
     checkSlug: (slug: string) => [...workspaceKeys.all, "check-slug", slug] as const,
+
+    stats: (workspaceId: string | undefined) =>
+        [...workspaceKeys.all, "stats", workspaceId] as const,
 };

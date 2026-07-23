@@ -7,10 +7,3 @@ export type StatCardProps = {
     icon: LucideIcon;
     iconClassName?: string;
 };
-
-export type OverviewStatsProps = {
-    members: number;
-    projects: number;
-    tasks: number;
-    dueToday: number;
-};

@@ -6,6 +6,17 @@ export type CheckSlug = {
     available: boolean;
 };
 
+export type WorkspaceStatsPayload = {
+    workspaceId: string;
+};
+
+export type WorkspaceStats = {
+    members: number;
+    projects: number;
+    tasks: number;
+    dueToday: number;
+};
+
 export type WorkspaceRole = "OWNER" | "MANAGER" | "MEMBER";
 
 export interface Workspace {

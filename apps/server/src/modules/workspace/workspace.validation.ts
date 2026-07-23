@@ -24,3 +24,7 @@ export const createWorkspaceSchema = z.object({
         .max(50, "Slug cannot exceed 50 characters.")
         .regex(/^[a-z0-9-]+$/, "Slug can only contain lowercase letters, numbers and hyphens."),
 });
+
+export const getWorkspaceStatsSchema = z.object({
+    workspaceId: z.string().trim().min(1, "Workspace ID is required."),
+});

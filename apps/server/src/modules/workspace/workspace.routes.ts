@@ -4,7 +4,11 @@ import { controllerWrapper } from "../../utils/controllerWrapper";
 import * as controller from "./workspace.controller";
 import authMiddleware from "../../middleware/auth";
 import { validate } from "../../middleware/validate";
-import { checkSlugSchema, createWorkspaceSchema } from "./workspace.validation";
+import {
+    checkSlugSchema,
+    createWorkspaceSchema,
+    getWorkspaceStatsSchema,
+} from "./workspace.validation";
 
 const workspaceController = controllerWrapper(controller);
 
@@ -19,6 +23,13 @@ router.post(
     authMiddleware,
     validate(createWorkspaceSchema),
     workspaceController.createWorkspace,
+);
+
+router.get(
+    "/stats",
+    validate(getWorkspaceStatsSchema, "query"),
+    authMiddleware,
+    workspaceController.getWorkspaceStats,
 );
 
 export default router;

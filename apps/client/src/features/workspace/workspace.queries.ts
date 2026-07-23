@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { checkSlug, getWorkspaces } from "./workspace.api";
+import { checkSlug, getWorkspaces, getWorkspaceStats } from "./workspace.api";
 import { workspaceKeys } from "./workspace.keys";
 import { getApiError } from "@/helpers/general";
 
@@ -32,6 +32,22 @@ export const useWorkspaces = () => {
     return useQuery({
         queryKey: workspaceKeys.list(),
         queryFn: getWorkspaces,
+        staleTime: 5 * 60 * 1000,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+    });
+};
+
+export const useWorkspaceStats = (workspaceId?: string) => {
+    return useQuery({
+        queryKey: workspaceKeys.stats(workspaceId),
+
+        queryFn: () =>
+            getWorkspaceStats({
+                workspaceId: workspaceId!,
+            }),
+
+        enabled: !!workspaceId,
         staleTime: 5 * 60 * 1000,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,

@@ -9,7 +9,7 @@ export default function StatCard({
     iconClassName,
 }: StatCardProps) {
     return (
-        <div className="rounded-xl border border-[#1E293B] bg-[#0B1120] p-5">
+        <div className="cursor-pointer rounded-xl border border-[#1E293B] bg-[#0B1120] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#2A3A6A] hover:bg-[#101827] hover:shadow-lg hover:shadow-black/20">
             <div className="flex items-start justify-between">
                 <div>
                     <p className="text-sm text-slate-400">{title}</p>

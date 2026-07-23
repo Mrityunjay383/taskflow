@@ -33,3 +33,15 @@ export const createWorkspace = async ({ body, user }: AuthContext) => {
         data: workspace,
     };
 };
+
+export const getWorkspaceStats = async ({ query }: AuthContext) => {
+    return {
+        success: true,
+        data: {
+            members: 0,
+            projects: 0,
+            tasks: 0,
+            dueToday: 0,
+        },
+    };
+};

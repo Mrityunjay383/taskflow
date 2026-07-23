@@ -6,6 +6,8 @@ import {
     CreateWorkspace,
     CreateWorkspacePayload,
     Workspace,
+    WorkspaceStats,
+    WorkspaceStatsPayload,
 } from "@/features/workspace/workspace.types";
 
 export const checkSlug = async (payload: CheckSlugPayload): Promise<CheckSlug> => {
@@ -26,6 +28,16 @@ export const createWorkspace = async (
     payload: CreateWorkspacePayload,
 ): Promise<CreateWorkspace> => {
     const response = await api.post<ApiResponse<CreateWorkspace>>("/workspace", payload);
+
+    return response.data.data!;
+};
+
+export const getWorkspaceStats = async (
+    payload: WorkspaceStatsPayload,
+): Promise<WorkspaceStats> => {
+    const response = await api.get<ApiResponse<WorkspaceStats>>("/workspace/stats", {
+        params: payload,
+    });
 
     return response.data.data!;
 };
