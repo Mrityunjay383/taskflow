@@ -31,7 +31,7 @@ export default function LoginPanel({}) {
             if (res?.onboardingRequired) {
                 router.replace("/onboarding");
             } else {
-                router.replace("/dashboard");
+                router.replace("/workspace");
             }
         } catch (error) {
             const apiError = getApiError(error);

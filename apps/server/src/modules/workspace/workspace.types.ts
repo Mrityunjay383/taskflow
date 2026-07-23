@@ -7,14 +7,27 @@ export type CheckSlugResult = Promise<{
     available: boolean;
 }>;
 
-export interface CreateWorkspaceResult {
+export type WorkspaceRole = "OWNER" | "MANAGER" | "MEMBER";
+
+export type GetWorkspacesInput = {
+    userId: string;
+};
+
+export type GetWorkspacesResult = {
     id: string;
     name: string;
     slug: string;
-}
+    role: WorkspaceRole;
+}[];
 
 export type CreateWorkspaceInput = {
     ownerId: string;
+    name: string;
+    slug: string;
+};
+
+export type CreateWorkspaceResult = {
+    id: string;
     name: string;
     slug: string;
 };

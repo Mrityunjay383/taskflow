@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 export const useCurrentUser = () => {
     const pathname = usePathname();
 
-    const enabled = pathname.startsWith("/dashboard") || pathname.startsWith("/onboarding");
+    const enabled = pathname.startsWith("/workspace") || pathname.startsWith("/onboarding");
 
     return useQuery({
         queryKey: authKeys.me,

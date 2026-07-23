@@ -4,4 +4,5 @@ export interface SidebarNavItemProps {
     title: string;
     href: string;
     icon: LucideIcon;
+    collapsed: boolean;
 }

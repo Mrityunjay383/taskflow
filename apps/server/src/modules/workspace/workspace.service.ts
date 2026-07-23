@@ -4,6 +4,8 @@ import {
     CheckSlugResult,
     CreateWorkspaceInput,
     CreateWorkspaceResult,
+    GetWorkspacesInput,
+    GetWorkspacesResult,
 } from "./workspace.types";
 import { AppError } from "../../utils/AppError";
 
@@ -20,6 +22,56 @@ export const isSlugAvailable = async ({ slug }: CheckSlugInput): CheckSlugResult
     return {
         available: !existing,
     };
+};
+
+export const getWorkspaces = async ({
+    userId,
+}: GetWorkspacesInput): Promise<GetWorkspacesResult> => {
+    const [owned, memberships] = await prisma.$transaction([
+        prisma.workspace.findMany({
+            where: {
+                ownerId: userId,
+            },
+            select: {
+                id: true,
+                name: true,
+                slug: true,
+                createdAt: true,
+            },
+            orderBy: {
+                createdAt: "asc",
+            },
+        }),
+
+        prisma.workspaceMember.findMany({
+            where: {
+                userId,
+            },
+            select: {
+                role: true,
+                workspace: {
+                    select: {
+                        id: true,
+                        name: true,
+                        slug: true,
+                        createdAt: true,
+                    },
+                },
+            },
+        }),
+    ]);
+
+    return [
+        ...owned.map((workspace) => ({
+            ...workspace,
+            role: "OWNER" as const,
+        })),
+
+        ...memberships.map(({ role, workspace }) => ({
+            ...workspace,
+            role,
+        })),
+    ];
 };
 
 export const createWorkspace = async ({
