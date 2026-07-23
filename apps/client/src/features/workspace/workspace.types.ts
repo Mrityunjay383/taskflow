@@ -21,7 +21,7 @@ export type CreateWorkspacePayload = {
 };
 
 export type CreateWorkspace = {
-    id: true;
-    name: true;
-    slug: true;
+    id: string;
+    name: string;
+    slug: string;
 };

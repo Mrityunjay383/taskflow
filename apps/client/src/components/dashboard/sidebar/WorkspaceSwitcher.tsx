@@ -13,6 +13,7 @@ import { WorkspaceSwitcherSkeleton } from "@/components/skeletons/WorkspaceSwitc
 import { useCurrentWorkspace } from "@/hooks/useCurrentWorkspace";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/hooks/useSidebar";
+import Link from "next/link";
 
 export default function WorkspaceSwitcher() {
     const { collapsed } = useSidebar();
@@ -111,9 +112,14 @@ export default function WorkspaceSwitcher() {
 
                     <DropdownMenuSeparator className="my-2" />
 
-                    <DropdownMenuItem className="cursor-pointer rounded-lg px-2 py-2.5 text-muted-foreground focus:bg-[#1E2A4A]">
-                        <Plus className="mr-3 h-4 w-4" />
-                        <span className="text-sm font-medium">Create New Workspace</span>
+                    <DropdownMenuItem asChild>
+                        <Link
+                            href="/dashboard/create-workspace"
+                            className="cursor-pointer rounded-lg px-2 py-2.5 text-muted-foreground"
+                        >
+                            <Plus className="mr-3 h-4 w-4" />
+                            <span className="text-sm font-medium">Create New Workspace</span>
+                        </Link>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
