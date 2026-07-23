@@ -1,7 +1,7 @@
 import AuthGuard from "@/components/auth/AuthGuard";
 
-import Wordmark from "@/components/onboarding/Wordmark";
-import CreateWorkspace from "@/components/onboarding/CreateWorkspace";
+import Wordmark from "@/components/common/Wordmark";
+import CreateWorkspace from "@/components/common/CreateWorkspace";
 
 const Onboarding = () => {
     return (

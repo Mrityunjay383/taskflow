@@ -1,4 +1,4 @@
-import { CheckSquare } from "lucide-react";
+import Wordmark from "@/components/common/Wordmark";
 
 export default function LeftPanel({}) {
     return (
@@ -6,13 +6,7 @@ export default function LeftPanel({}) {
             {/* Ambient glow */}
             <div className="absolute -bottom-32 -left-20 w-[500px] h-[500px] rounded-full bg-indigo-600/10 blur-3xl pointer-events-none" />
 
-            {/* Wordmark */}
-            <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center">
-                    <CheckSquare className="w-4 h-4 text-white" strokeWidth={2.5} />
-                </div>
-                <span className="text-white font-bold text-lg tracking-tight">Taskflow</span>
-            </div>
+            <Wordmark />
 
             {/* Body */}
             <div className="flex flex-col gap-10 relative">

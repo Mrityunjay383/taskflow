@@ -1,4 +1,4 @@
-import CreateWorkspace from "@/components/onboarding/CreateWorkspace";
+import CreateWorkspace from "@/components/common/CreateWorkspace";
 
 const CreateNewWorkspacePage = () => {
     return (

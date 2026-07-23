@@ -1,4 +1,5 @@
 import { Loader2, CheckSquare } from "lucide-react";
+import Wordmark from "@/components/common/Wordmark";
 
 export default function AuthGuardLoader() {
     return (
@@ -13,13 +14,7 @@ export default function AuthGuardLoader() {
             {/* Content */}
             <div className="relative flex flex-col items-center gap-8">
                 {/* Logo */}
-                <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-500 flex items-center justify-center shadow-[0_0_30px_rgba(99,102,241,0.35)]">
-                        <CheckSquare className="w-6 h-6 text-white" strokeWidth={2.5} />
-                    </div>
-
-                    <span className="text-2xl font-bold tracking-tight text-white">Taskflow</span>
-                </div>
+                <Wordmark />
 
                 {/* Spinner */}
                 <div className="flex flex-col items-center gap-4">

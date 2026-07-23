@@ -2,13 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-import { CheckSquare } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { LegalLayoutProps } from "@/components/legal/types";
+import Wordmark from "@/components/common/Wordmark";
 
 export default function LegalLayout({
     title,
@@ -34,19 +32,7 @@ export default function LegalLayout({
                         href="/"
                         className="group flex items-center gap-3 transition-opacity hover:opacity-90"
                     >
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-500 shadow-lg shadow-indigo-500/25">
-                            <CheckSquare className="h-5 w-5 text-white" strokeWidth={2.5} />
-                        </div>
-
-                        <div className="flex flex-col">
-                            <span className="text-lg font-bold tracking-tight text-white">
-                                TaskFlow
-                            </span>
-
-                            <span className="text-xs text-[#64748B]">
-                                Project Management Platform
-                            </span>
-                        </div>
+                        <Wordmark />
                     </Link>
 
                     <Button
