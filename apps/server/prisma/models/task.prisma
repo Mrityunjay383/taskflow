@@ -4,7 +4,7 @@ model Task {
   title       String
   description String?
 
-  status TaskStatus @default(TODO)
+  status   TaskStatus   @default(TODO)
   priority TaskPriority @default(MEDIUM)
 
   dueDate DateTime?
