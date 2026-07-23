@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { StatCardProps } from "@/components/dashboard/overview/types";
+import { StatCardProps } from "@/components/dashboard/types";
 
 export default function StatCard({
     title,

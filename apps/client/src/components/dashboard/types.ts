@@ -7,3 +7,10 @@ export type StatCardProps = {
     icon: LucideIcon;
     iconClassName?: string;
 };
+
+export interface SidebarNavItemProps {
+    title: string;
+    href: string;
+    icon: LucideIcon;
+    collapsed: boolean;
+}

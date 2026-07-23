@@ -15,7 +15,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 <DashboardSidebar />
 
                 <main className="flex-1 overflow-y-auto">
-                    <div className="mx-auto w-full h-full max-w-7xl p-8">{children}</div>
+                    <div className="mx-auto w-full h-full p-8">{children}</div>
                 </main>
             </div>
         </AuthGuard>

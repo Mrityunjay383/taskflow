@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { SidebarNavItemProps } from "@/components/dashboard/sidebar/types";
+import { SidebarNavItemProps } from "@/components/dashboard/types";
 
 export default function SidebarNavItem({
     title,
