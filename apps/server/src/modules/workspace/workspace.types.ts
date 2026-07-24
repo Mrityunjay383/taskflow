@@ -1,33 +1,27 @@
-import { checkSlugSchema, createWorkspaceSchema } from "./workspace.validation";
-import { z } from "zod";
+import { WorkspaceRole } from "@prisma/client";
+import { WorkspaceSummary } from "../../service/types";
+import { WorkspaceUserRoleObj } from "./workspace.constants";
 
-export type CheckSlugInput = z.infer<typeof checkSlugSchema>;
+export type InviteIdentifierType = "EMAIL" | "USERNAME";
 
-export type CheckSlugResult = Promise<{
-    available: boolean;
-}>;
-
-export type WorkspaceRole = "OWNER" | "MANAGER" | "MEMBER";
-
-export type GetWorkspacesInput = {
-    userId: string;
+export type ResolvedInvitee = {
+    email: string;
+    invitedUserId: string | null;
 };
 
-export type GetWorkspacesResult = {
+export type Workspace = {
     id: string;
-    name: string;
-    slug: string;
-    role: WorkspaceRole;
-}[];
-
-export type CreateWorkspaceInput = {
     ownerId: string;
-    name: string;
-    slug: string;
 };
 
-export type CreateWorkspaceResult = {
-    id: string;
-    name: string;
-    slug: string;
+export type EnsureCanBeInvitedInput = {
+    workspace: Workspace;
+    invitedById: string;
+    invitee: ResolvedInvitee;
+};
+
+export type WorkspaceUserRole = (typeof WorkspaceUserRoleObj)[keyof typeof WorkspaceUserRoleObj];
+
+export type WorkspaceListItem = WorkspaceSummary & {
+    role: WorkspaceUserRole;
 };

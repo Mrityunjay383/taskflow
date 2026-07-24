@@ -9,6 +9,5 @@ export const workspaceKeys = {
 
     checkSlug: (slug: string) => [...workspaceKeys.all, "check-slug", slug] as const,
 
-    stats: (workspaceId: string | undefined) =>
-        [...workspaceKeys.all, "stats", workspaceId] as const,
+    stats: (workspaceId: string | null) => [...workspaceKeys.all, "stats", workspaceId] as const,
 };

@@ -6,10 +6,6 @@ export type CheckSlug = {
     available: boolean;
 };
 
-export type WorkspaceStatsPayload = {
-    workspaceId: string;
-};
-
 export type WorkspaceStats = {
     members: number;
     projects: number;

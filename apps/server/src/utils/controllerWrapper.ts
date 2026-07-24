@@ -8,6 +8,7 @@ const createContext = (req: Request): RequestContext => {
         params: req.params,
         user: (req as any).user,
         headers: req.headers,
+        workspaceId: (req as any).workspaceId,
     };
 };
 

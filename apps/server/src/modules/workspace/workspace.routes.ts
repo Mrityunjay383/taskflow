@@ -4,11 +4,8 @@ import { controllerWrapper } from "../../utils/controllerWrapper";
 import * as controller from "./workspace.controller";
 import authMiddleware from "../../middleware/auth";
 import { validate } from "../../middleware/validate";
-import {
-    checkSlugSchema,
-    createWorkspaceSchema,
-    getWorkspaceStatsSchema,
-} from "./workspace.validation";
+import { checkSlugSchema, createWorkspaceSchema, inviteMemberSchema } from "./workspace.validation";
+import { requireWorkspace } from "../../middleware/workspace";
 
 const workspaceController = controllerWrapper(controller);
 
@@ -25,11 +22,14 @@ router.post(
     workspaceController.createWorkspace,
 );
 
-router.get(
-    "/stats",
-    validate(getWorkspaceStatsSchema, "query"),
+router.get("/stats", authMiddleware, requireWorkspace, workspaceController.getWorkspaceStats);
+
+router.post(
+    "/invite",
     authMiddleware,
-    workspaceController.getWorkspaceStats,
+    requireWorkspace,
+    validate(inviteMemberSchema),
+    workspaceController.invite,
 );
 
 export default router;

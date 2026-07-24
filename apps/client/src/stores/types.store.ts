@@ -6,5 +6,5 @@ export type PreferencesStore = {
 
     setSidebarCollapsed: (collapsed: boolean) => void;
 
-    setCurrentWorkspace: (workspaceId: string) => void;
+    setCurrentWorkspaceId: (workspaceId: string | null) => void;
 };

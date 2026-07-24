@@ -18,13 +18,17 @@ export const usePreferencesStore = create<PreferencesStore>()(
                     sidebarCollapsed: collapsed,
                 }),
 
-            setCurrentWorkspace: (workspaceId) =>
+            setCurrentWorkspaceId: (workspaceId) =>
                 set({
                     currentWorkspaceId: workspaceId,
                 }),
         }),
         {
             name: "taskflow-preferences",
+            partialize: (state) => ({
+                sidebarCollapsed: state.sidebarCollapsed,
+                currentWorkspaceId: state.currentWorkspaceId,
+            }),
         },
     ),
 );

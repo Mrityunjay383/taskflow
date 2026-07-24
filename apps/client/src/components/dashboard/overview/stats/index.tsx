@@ -4,12 +4,9 @@ import { Users, FolderKanban, CheckSquare, TrendingUp } from "lucide-react";
 import StatCard from "./StatCard";
 import OverviewStatsSkeleton from "@/components/skeletons/OverviewStats";
 import { useWorkspaceStats } from "@/features/workspace/workspace.queries";
-import { useCurrentWorkspace } from "@/hooks/useCurrentWorkspace";
 
 export default function OverviewStats({}) {
-    const { currentWorkspace } = useCurrentWorkspace();
-
-    const { data: workspaceStats, isLoading } = useWorkspaceStats(currentWorkspace?.id);
+    const { data: workspaceStats, isLoading } = useWorkspaceStats();
 
     if (isLoading) {
         return <OverviewStatsSkeleton />;

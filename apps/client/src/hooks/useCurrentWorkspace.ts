@@ -10,7 +10,7 @@ export function useCurrentWorkspace() {
 
     const currentWorkspaceId = usePreferencesStore((state) => state.currentWorkspaceId);
 
-    const setCurrentWorkspace = usePreferencesStore((state) => state.setCurrentWorkspace);
+    const setCurrentWorkspaceId = usePreferencesStore((state) => state.setCurrentWorkspaceId);
 
     const currentWorkspace = useMemo(() => {
         if (!workspaces.length) {
@@ -26,16 +26,16 @@ export function useCurrentWorkspace() {
 
     useEffect(() => {
         if (currentWorkspace && currentWorkspace.id !== currentWorkspaceId) {
-            setCurrentWorkspace(currentWorkspace.id);
+            setCurrentWorkspaceId(currentWorkspace.id);
         }
-    }, [currentWorkspace, currentWorkspaceId, setCurrentWorkspace]);
+    }, [currentWorkspace, currentWorkspaceId, setCurrentWorkspaceId]);
 
     const switchWorkspace = (workspaceId: string) => {
         if (workspaceId === currentWorkspaceId) {
             return;
         }
 
-        setCurrentWorkspace(workspaceId);
+        setCurrentWorkspaceId(workspaceId);
 
         // Future:
         // queryClient.invalidateQueries(...)

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { checkSlug, getWorkspaces, getWorkspaceStats } from "./workspace.api";
 import { workspaceKeys } from "./workspace.keys";
 import { getApiError } from "@/helpers/general";
+import { usePreferencesStore } from "@/stores/ui-preferences.store";
 
 export const useCheckWorkspaceSlug = (slug: string) => {
     const normalized = slug.trim().toLowerCase();
@@ -38,14 +39,13 @@ export const useWorkspaces = () => {
     });
 };
 
-export const useWorkspaceStats = (workspaceId?: string) => {
+export const useWorkspaceStats = () => {
+    const workspaceId = usePreferencesStore((state) => state.currentWorkspaceId);
+
     return useQuery({
         queryKey: workspaceKeys.stats(workspaceId),
 
-        queryFn: () =>
-            getWorkspaceStats({
-                workspaceId: workspaceId!,
-            }),
+        queryFn: () => getWorkspaceStats(),
 
         enabled: !!workspaceId,
         staleTime: 5 * 60 * 1000,
