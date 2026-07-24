@@ -5,7 +5,8 @@ export type AuthUser = {
     id: string;
     userName: string;
     email: string;
-    onboardingRequired?: boolean;
+    ownedWorkspaces: { id: string }[];
+    workspaceMemberships: { id: string }[];
 };
 
 export type IsUniqueUserInput = z.infer<typeof checkUserNameSchema>;
@@ -14,6 +15,7 @@ export type CreateUserInput = {
     email: string;
     password: string;
     userName: string;
+    select: any;
 };
 
 export type LoginUserInput = {
