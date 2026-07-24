@@ -1,17 +1,18 @@
-import * as AuthService from "./auth.service";
 import { generateToken } from "../../utils/jwt";
 import { AuthContext, RequestContext } from "../../types";
-import { getCurrentUser } from "./auth.service";
+import * as AuthService from "../../service/user";
 
 export const checkUserName = async ({ query }: RequestContext) => {
     const { userName } = query;
 
-    const result = await AuthService.isAvailable({ userName });
+    const exist = await AuthService.getUserByUsername(userName);
 
     return {
         success: true,
         statusCode: 200,
-        data: result,
+        data: {
+            available: !exist,
+        },
     };
 };
 

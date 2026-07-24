@@ -52,7 +52,7 @@ export const createWorkspace = async ({ body, user }: AuthContext) => {
     };
 };
 
-export const getWorkspaceStats = async ({ query, workspaceId }: AuthContext) => {
+export const getWorkspaceStats = async ({ workspaceId }: AuthContext) => {
     console.log("workspaceId", workspaceId);
 
     return {
